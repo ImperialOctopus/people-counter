@@ -6,22 +6,13 @@ abstract class CounterEvent extends Equatable {
   const CounterEvent();
 }
 
-/// Initialise counter.
-class InitialiseCounterEvent extends CounterEvent {
-  /// Initialise counter.
-  const InitialiseCounterEvent();
-
-  @override
-  List<Object> get props => [];
-}
-
 /// Counter number changed.
-class LoadCounterEvent extends CounterEvent {
+class ReceivedChangeCounterEvent extends CounterEvent {
   /// New value.
   final int value;
 
   /// Counter number changed.
-  const LoadCounterEvent(this.value);
+  const ReceivedChangeCounterEvent(this.value);
 
   @override
   List<Object> get props => [value];

@@ -3,36 +3,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../service/database/database_service.dart';
 import 'counter_event.dart';
-import 'counter_state.dart';
 
 /// Cubit to hold main count.
-class CounterBloc extends Bloc<CounterEvent, CounterState> {
+class CounterBloc extends Bloc<CounterEvent, int> {
   final DatabaseService _databaseService;
 
   /// Cubit to hold main count.
   CounterBloc({@required DatabaseService databaseService})
       : _databaseService = databaseService,
-        super(CounterStateUninitialised()) {
+        super(0) {
     _databaseService.valueStream.listen((value) {
-      add(LoadCounterEvent(value));
+      add(ReceivedChangeCounterEvent(value));
     });
   }
 
   @override
-  Stream<CounterState> mapEventToState(CounterEvent event) async* {
-    if (event is LoadCounterEvent) {
-      yield* _mapLoadedToState(event);
+  Stream<int> mapEventToState(CounterEvent event) async* {
+    if (event is ReceivedChangeCounterEvent) {
+      yield* _mapReceivedChangeToState(event);
     }
     if (event is ModifyCounterEvent) {
       yield* _mapModifyToState(event);
     }
   }
 
-  Stream<CounterState> _mapLoadedToState(LoadCounterEvent event) async* {
-    yield CounterStateLoaded(event.value);
+  Stream<int> _mapReceivedChangeToState(
+      ReceivedChangeCounterEvent event) async* {
+    yield event.value;
   }
 
-  Stream<CounterState> _mapModifyToState(ModifyCounterEvent event) async* {
+  Stream<int> _mapModifyToState(ModifyCounterEvent event) async* {
+    yield state + event.change;
     await _databaseService.modifyValue(event.change);
   }
 }

@@ -4,6 +4,8 @@ import 'database_service.dart';
 
 /// Test database stored only locally.
 class TestDatabaseService implements DatabaseService {
+  int _value = 0;
+
   final _stream = StreamController<int>()..add(0);
 
   @override
@@ -13,11 +15,13 @@ class TestDatabaseService implements DatabaseService {
 
   @override
   Future<void> modifyValue(int change) async {
-    _stream.add(await _stream.stream.last + change);
+    _value += change;
+    _stream.add(_value);
   }
 
   @override
   Future<void> setValue(int value) async {
-    _stream.add(value);
+    _value = value;
+    _stream.add(_value);
   }
 }
