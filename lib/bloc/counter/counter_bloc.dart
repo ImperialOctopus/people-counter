@@ -12,29 +12,27 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   /// Cubit to hold main count.
   CounterBloc({@required DatabaseService databaseService})
       : _databaseService = databaseService,
-        super(CounterStateUninitialised());
+        super(CounterStateUninitialised()) {
+    _databaseService.valueStream.listen((value) {
+      add(LoadCounterEvent(value));
+    });
+  }
 
   @override
   Stream<CounterState> mapEventToState(CounterEvent event) async* {
-    if (event is InitialiseCounterEvent) {
-      yield* _mapInitialiseToState(event);
+    if (event is LoadCounterEvent) {
+      yield* _mapLoadedToState(event);
     }
-    if (event is IncrementCounterEvent) {
-      yield* _mapIncrementToState(event);
-    }
-    if (event is DecrementCounterEvent) {
-      yield* _mapDecrementToState(event);
+    if (event is ModifyCounterEvent) {
+      yield* _mapModifyToState(event);
     }
   }
 
-  Stream<CounterState> _mapInitialiseToState(
-      InitialiseCounterEvent event) async* {
-    _databaseService.getValue();
+  Stream<CounterState> _mapLoadedToState(LoadCounterEvent event) async* {
+    yield CounterStateLoaded(event.value);
   }
 
-  Stream<CounterState> _mapIncrementToState(
-      IncrementCounterEvent event) async* {}
-
-  Stream<CounterState> _mapDecrementToState(
-      DecrementCounterEvent event) async* {}
+  Stream<CounterState> _mapModifyToState(ModifyCounterEvent event) async* {
+    await _databaseService.modifyValue(event.change);
+  }
 }

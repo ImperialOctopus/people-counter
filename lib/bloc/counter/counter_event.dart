@@ -15,20 +15,26 @@ class InitialiseCounterEvent extends CounterEvent {
   List<Object> get props => [];
 }
 
-/// Add 1 to counter.
-class IncrementCounterEvent extends CounterEvent {
-  /// Add 1 to counter.
-  const IncrementCounterEvent();
+/// Counter number changed.
+class LoadCounterEvent extends CounterEvent {
+  /// New value.
+  final int value;
+
+  /// Counter number changed.
+  const LoadCounterEvent(this.value);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [value];
 }
 
-/// Remove 1 from counter.
-class DecrementCounterEvent extends CounterEvent {
-  /// Remove 1 from counter.
-  const DecrementCounterEvent();
+/// Modify counter.
+class ModifyCounterEvent extends CounterEvent {
+  /// Number to change by.
+  final int change;
+
+  /// Modify counter.
+  const ModifyCounterEvent(this.change);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [change];
 }

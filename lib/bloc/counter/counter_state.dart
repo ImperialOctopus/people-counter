@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 /// State for counter bloc.
 abstract class CounterState extends Equatable {
@@ -22,7 +21,7 @@ class CounterStateLoaded extends CounterState {
   final int value;
 
   /// Counter value loaded.
-  const CounterStateLoaded({@required this.value});
+  const CounterStateLoaded(this.value);
 
   @override
   List<Object> get props => [value];

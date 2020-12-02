@@ -3,12 +3,6 @@ import 'database_service.dart';
 /// Database implementation using Firebase
 class FirebaseDatabaseService implements DatabaseService {
   @override
-  Future<int> getValue() {
-    // TODO: implement getValue
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> modifyValue(int change) {
     // TODO: implement modifyValue
     throw UnimplementedError();
@@ -19,4 +13,8 @@ class FirebaseDatabaseService implements DatabaseService {
     // TODO: implement setValue
     throw UnimplementedError();
   }
+
+  @override
+  // TODO: implement valueStream
+  Stream<int> get valueStream => throw UnimplementedError();
 }
