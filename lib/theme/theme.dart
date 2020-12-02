@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Theme data for app.
 final themeData = ThemeData(
   // This is the theme of your application.
   //

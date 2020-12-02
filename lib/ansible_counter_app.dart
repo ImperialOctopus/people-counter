@@ -1,9 +1,12 @@
-import 'package:ansible_counter/screen/main_screen.dart';
-import 'package:ansible_counter/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'screen/main_screen.dart';
+import 'theme/theme.dart';
+
+/// Full app widget.
 class AnsibleCounterApp extends StatelessWidget {
+  /// Full app widget.
   const AnsibleCounterApp();
 
   @override
@@ -12,7 +15,9 @@ class AnsibleCounterApp extends StatelessWidget {
   }
 }
 
+/// Stateful app view.
 class AppView extends StatefulWidget {
+  /// Stateful app view.
   const AppView();
 
   @override
