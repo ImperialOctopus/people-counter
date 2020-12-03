@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Loading...'),
-            Text('Middle'),
+            CircularProgressIndicator(),
           ],
         ),
       ),

@@ -14,6 +14,9 @@ class FirebaseDatabaseService implements DatabaseService {
         FirebaseFirestore.instance.collection('counter').doc('tt_christmas');
     _stream =
         _documentReference.snapshots().map((doc) => doc.data()['value'] as int);
+    _documentReference.snapshots().listen((event) {
+      print(event['value']);
+    });
   }
 
   @override
@@ -22,6 +25,9 @@ class FirebaseDatabaseService implements DatabaseService {
       final snapshot = await transaction.get(_documentReference);
 
       int newValue = snapshot.data()['value'] + change;
+      if (newValue < 0) {
+        newValue = 0;
+      }
 
       // Perform an update on the document
       transaction.update(_documentReference, {'value': newValue});
