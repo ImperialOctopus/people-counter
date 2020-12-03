@@ -15,23 +15,30 @@ class CounterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(24),
-            child: Image(image: AssetImage('assets/tring_together_logo.png')),
-          ),
-          Text(
-            '''Tring Together\nNetworked People Counter''',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-          ),
-          Flexible(
-            child: FractionallySizedBox(
-              heightFactor: 0.6,
-              child: Column(
+      body: Center(
+        child: FractionallySizedBox(
+          heightFactor: 0.7,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: Center(
+                  child: Image(
+                    width: 600,
+                    fit: BoxFit.contain,
+                    image: AssetImage('assets/tring_together_logo.png'),
+                  ),
+                ),
+              ),
+              Text(
+                '''Tring Together\nNetworked People Counter''',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -43,15 +50,12 @@ class CounterScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.all(24),
-                  ),
-                  value == null
-                      ? CircularProgressIndicator()
-                      : Text(
-                          value.toString(),
-                          style: TextStyle(fontSize: 36),
-                        ),
-                  Padding(
-                    padding: EdgeInsets.all(24),
+                    child: value == null
+                        ? CircularProgressIndicator()
+                        : Text(
+                            value.toString(),
+                            style: TextStyle(fontSize: 36),
+                          ),
                   ),
                   IconButton(
                     iconSize: 48,
@@ -61,9 +65,9 @@ class CounterScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
