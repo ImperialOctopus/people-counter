@@ -20,4 +20,4 @@ doc/api/
 *.js.deps
 *.js.map
 
-android/google-services.json
+android/app/google-services.json

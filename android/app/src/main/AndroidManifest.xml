@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ansible_counter">
+    package="com.imperialoctopus.ansible_counter">
    <application
         android:label="ansible_counter"
         android:icon="@mipmap/ic_launcher">
