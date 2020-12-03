@@ -19,6 +19,15 @@ class CounterScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Padding(
+            padding: EdgeInsets.all(24),
+            child: Image(image: AssetImage('assets/tring_together_logo.png')),
+          ),
+          Text(
+            '''Tring Together\nNetworked People Counter''',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          ),
           Flexible(
             child: FractionallySizedBox(
               heightFactor: 0.6,
