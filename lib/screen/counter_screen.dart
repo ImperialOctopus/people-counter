@@ -15,23 +15,33 @@ class CounterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RaisedButton(
-              child: Text('Up'),
-              onPressed: () => BlocProvider.of<CounterBloc>(context)
-                  .add(ModifyCounterEvent(1)),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Flexible(
+            child: FractionallySizedBox(
+              heightFactor: 0.6,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_upward),
+                    onPressed: () => BlocProvider.of<CounterBloc>(context)
+                        .add(ModifyCounterEvent(1)),
+                  ),
+                  Text(value.toString()),
+                  IconButton(
+                    icon: Icon(Icons.arrow_downward),
+                    onPressed: () => BlocProvider.of<CounterBloc>(context)
+                        .add(ModifyCounterEvent(-1)),
+                  ),
+                ],
+              ),
             ),
-            Text(value.toString()),
-            RaisedButton(
-              child: Text('Down'),
-              onPressed: () => BlocProvider.of<CounterBloc>(context)
-                  .add(ModifyCounterEvent(-1)),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

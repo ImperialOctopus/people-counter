@@ -12,10 +12,8 @@ class FirebaseDatabaseService implements DatabaseService {
   FirebaseDatabaseService() {
     _documentReference =
         FirebaseFirestore.instance.collection('counter').doc('tt_christmas');
-    _stream = _documentReference
-        .collection('value')
-        .snapshots()
-        .map((event) => event.docs.last.get('value') as int);
+    _stream =
+        _documentReference.snapshots().map((doc) => doc.data()['value'] as int);
   }
 
   @override
