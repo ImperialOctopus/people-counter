@@ -1,20 +1,36 @@
-import 'package:ansible_counter/bloc/counter/counter_bloc.dart';
-import 'package:ansible_counter/service/database/database_service.dart';
-import 'package:ansible_counter/service/database/test_database_service.dart';
+import 'package:ansible_counter/component/error_component.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/counter/counter_bloc.dart';
 import 'screen/main_screen.dart';
+import 'service/database/database_service.dart';
+import 'service/database/test_database_service.dart';
 import 'theme/theme.dart';
 
 /// Full app widget.
 class AnsibleCounterApp extends StatelessWidget {
-  /// Full app widget.
-  const AnsibleCounterApp();
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
-    return const AppView();
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          return ErrorComponent(message: snapshot.error);
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return const AppView();
+        }
+
+        return CircularProgressIndicator();
+      },
+    );
   }
 }
 
