@@ -21,4 +21,4 @@ doc/api/
 *.js.map
 
 android/app/google-services.json
-web/index.html
+web/init-firebase.js
