@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/counter/counter_bloc.dart';
-import 'screen/error_screen.dart';
-import 'screen/main_screen.dart';
+import 'screen/menu_screen.dart';
 import 'screen/splash_screen.dart';
 import 'service/database/database_service.dart';
 import 'service/database/firebase_database_service.dart';
@@ -35,9 +34,11 @@ class _AnsibleCounterAppState extends State<AnsibleCounterApp> {
         builder: (context, snapshot) {
           // Check for errors
           if (snapshot.hasError) {
-            return ErrorScreen(
-                message: '''We had a problem connecting to the internet.
-          Please try restarting this app.''');
+            Center(
+              child: Text(
+                  // ignore: lines_longer_than_80_chars
+                  'We had a problem connecting to the internet.\nPlease try restarting this app.'),
+            );
           }
           if (snapshot.connectionState == ConnectionState.done) {
             return AppView();
@@ -68,6 +69,7 @@ class _AppViewState extends State<AppView> {
     super.initState();
 
     _databaseService = FirebaseDatabaseService();
+
     _counterBloc = CounterBloc(databaseService: _databaseService);
   }
 
@@ -81,7 +83,7 @@ class _AppViewState extends State<AppView> {
         providers: [
           BlocProvider<CounterBloc>.value(value: _counterBloc),
         ],
-        child: MainScreen(),
+        child: MenuScreen(),
       ),
     );
   }

@@ -5,7 +5,7 @@ import '../../service/database/database_service.dart';
 import 'counter_event.dart';
 
 /// Cubit to hold main count.
-class CounterBloc extends Bloc<CounterEvent, int> {
+class CounterBloc extends Bloc<CounterEvent, Map<int, int>> {
   final DatabaseService _databaseService;
 
   /// Cubit to hold main count.
@@ -18,7 +18,7 @@ class CounterBloc extends Bloc<CounterEvent, int> {
   }
 
   @override
-  Stream<int> mapEventToState(CounterEvent event) async* {
+  Stream<Map<int, int>> mapEventToState(CounterEvent event) async* {
     if (event is ReceivedChangeCounterEvent) {
       yield* _mapReceivedChangeToState(event);
     }
@@ -27,14 +27,23 @@ class CounterBloc extends Bloc<CounterEvent, int> {
     }
   }
 
-  Stream<int> _mapReceivedChangeToState(
+  Stream<Map<int, int>> _mapReceivedChangeToState(
       ReceivedChangeCounterEvent event) async* {
     yield event.value;
   }
 
-  Stream<int> _mapModifyToState(ModifyCounterEvent event) async* {
-    yield (state + event.change < 0) ? 0 : state + event.change;
+  Stream<Map<int, int>> _mapModifyToState(ModifyCounterEvent event) async* {
+    yield state.map((key, value) {
+      if (key == event.index) {
+        return MapEntry(
+          key,
+          (value + event.change < 0) ? 0 : value + event.change,
+        );
+      } else {
+        return MapEntry(key, value);
+      }
+    });
 
-    await _databaseService.modifyValue(event.change);
+    await _databaseService.modifyValue(event.index, event.change);
   }
 }

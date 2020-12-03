@@ -9,7 +9,7 @@ abstract class CounterEvent extends Equatable {
 /// Counter number changed.
 class ReceivedChangeCounterEvent extends CounterEvent {
   /// New value.
-  final int value;
+  final Map<int, int> value;
 
   /// Counter number changed.
   const ReceivedChangeCounterEvent(this.value);
@@ -20,12 +20,14 @@ class ReceivedChangeCounterEvent extends CounterEvent {
 
 /// Modify counter.
 class ModifyCounterEvent extends CounterEvent {
+  final int index;
+
   /// Number to change by.
   final int change;
 
   /// Modify counter.
-  const ModifyCounterEvent(this.change);
+  const ModifyCounterEvent(this.index, this.change);
 
   @override
-  List<Object> get props => [change];
+  List<Object> get props => [index, change];
 }

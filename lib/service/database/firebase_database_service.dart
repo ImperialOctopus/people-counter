@@ -7,35 +7,38 @@ import 'database_service.dart';
 /// Database implementation using Firebase
 class FirebaseDatabaseService implements DatabaseService {
   DocumentReference _documentReference;
-  Stream<int> _stream;
 
   FirebaseDatabaseService() {
     _documentReference =
         FirebaseFirestore.instance.collection('counter').doc('tt_christmas');
-    _stream =
-        _documentReference.snapshots().map((doc) => doc.data()['value'] as int);
   }
 
   @override
-  Future<void> modifyValue(int change) {
+  Future<void> modifyValue(int index, int change) {
     return FirebaseFirestore.instance.runTransaction((transaction) async {
       final snapshot = await transaction.get(_documentReference);
 
-      int newValue = snapshot.data()['value'] + change;
+      int newValue = snapshot.data()[index] + change;
       if (newValue < 0) {
         newValue = 0;
       }
 
       // Perform an update on the document
-      transaction.update(_documentReference, {'value': newValue});
+      transaction.update(_documentReference, {index.toString(): newValue});
     });
   }
 
   @override
-  Future<void> setValue(int value) {
-    return _documentReference.update({'value': value});
+  Future<void> setValue(int index, int value) {
+    return _documentReference.update({index.toString(): value});
   }
 
   @override
-  Stream<int> get valueStream => _stream;
+  Stream<Map<int, int>> get valueStream =>
+      _documentReference.snapshots().map((doc) => {
+            0: doc.data()[0],
+            1: doc.data()[1],
+            2: doc.data()[2],
+            3: doc.data()[3],
+          });
 }
