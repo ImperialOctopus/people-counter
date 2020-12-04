@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'ansible_counter_app.dart';
+import 'people_counter_app.dart';
 
 void main() {
-  runApp(AnsibleCounterApp());
+  runApp(PeopleCounterApp());
 }

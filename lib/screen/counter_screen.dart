@@ -30,6 +30,7 @@ class CounterScreen extends StatelessWidget {
               builder: (context) => AlertDialog(
                 title: Text("Reset Counter"),
                 content: Text(
+                    // ignore: lines_longer_than_80_chars
                     "This will reset the counter to zero.\nHas Steffi said you're allowed to do this?"),
                 actions: [
                   FlatButton(

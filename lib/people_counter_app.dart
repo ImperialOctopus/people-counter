@@ -9,12 +9,12 @@ import 'service/database/firebase_database_service.dart';
 import 'theme/theme.dart';
 
 /// Full app widget.
-class AnsibleCounterApp extends StatefulWidget {
+class PeopleCounterApp extends StatefulWidget {
   @override
-  _AnsibleCounterAppState createState() => _AnsibleCounterAppState();
+  _PeopleCounterAppState createState() => _PeopleCounterAppState();
 }
 
-class _AnsibleCounterAppState extends State<AnsibleCounterApp> {
+class _PeopleCounterAppState extends State<PeopleCounterApp> {
   Future<FirebaseApp> _initialization;
 
   @override

@@ -1,5 +1,5 @@
-name: ansible_counter
-description: A new Flutter project.
+name: people_counter
+description: App to count people in and out of public events.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
