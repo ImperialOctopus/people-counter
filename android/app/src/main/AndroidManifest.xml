@@ -2,7 +2,7 @@
     package="com.imperialoctopus.ansible_counter">
    <application
         android:label="ansible_counter"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

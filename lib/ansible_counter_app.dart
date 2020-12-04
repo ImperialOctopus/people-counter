@@ -26,7 +26,7 @@ class _AnsibleCounterAppState extends State<AnsibleCounterApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ansible Counter',
+      title: 'Tring Together People Counter',
       theme: themeData,
       home: FutureBuilder(
         future: _initialization,
