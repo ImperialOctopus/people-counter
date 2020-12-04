@@ -1,4 +1,4 @@
-package com.imperialoctopus.ansible_counter
+package com.imperialoctopus.people_counter
 
 import io.flutter.embedding.android.FlutterActivity
 
