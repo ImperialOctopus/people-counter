@@ -67,16 +67,11 @@ class CounterScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
-              '''Tring Together\nNetworked People Counter''',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-            ),
             Padding(padding: EdgeInsets.symmetric(vertical: 12)),
             Text(
               _roomNames[room],
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
             ),
             Expanded(
               child: Column(

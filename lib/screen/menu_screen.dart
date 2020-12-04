@@ -33,7 +33,7 @@ class MenuScreen extends StatelessWidget {
             Text(
               '''Tring Together\nNetworked People Counter''',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
             ),
             Expanded(
               child: Column(
@@ -41,42 +41,37 @@ class MenuScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  RaisedButton(
-                    child: Text(_roomNames[0]),
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => CounterScreen(room: 0),
-                      ),
-                    ),
-                  ),
-                  RaisedButton(
-                    child: Text(_roomNames[1]),
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => CounterScreen(room: 1),
-                      ),
-                    ),
-                  ),
-                  RaisedButton(
-                    child: Text(_roomNames[2]),
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => CounterScreen(room: 2),
-                      ),
-                    ),
-                  ),
-                  RaisedButton(
-                    child: Text(_roomNames[3]),
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => CounterScreen(room: 3),
-                      ),
-                    ),
-                  ),
+                  _menuButton(context, 0),
+                  _menuButton(context, 1),
+                  _menuButton(context, 2),
+                  _menuButton(context, 3),
                 ],
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _menuButton(BuildContext context, int index) {
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: 50,
+          minWidth: 200,
+        ),
+        child: ElevatedButton(
+          child: Text(
+            _roomNames[index],
+            style: TextStyle(fontSize: 18),
+          ),
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => CounterScreen(room: index),
+            ),
+          ),
         ),
       ),
     );
