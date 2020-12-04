@@ -41,3 +41,12 @@ class SetCounterEvent extends CounterEvent {
   @override
   List<Object> get props => [index, value];
 }
+
+class DebounceEndedEvent extends CounterEvent {
+  final Map<int, int> value;
+
+  const DebounceEndedEvent(this.value);
+
+  @override
+  List<Object> get props => [value];
+}

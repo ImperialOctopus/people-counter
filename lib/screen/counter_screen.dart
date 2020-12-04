@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:people_counter/bloc/counter/counter_state.dart';
 
 import '../bloc/counter/counter_bloc.dart';
 import '../bloc/counter/counter_event.dart';
@@ -88,14 +89,18 @@ class CounterScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.all(24),
-                    child: BlocBuilder<CounterBloc, Map<int, int>>(
+                    child: BlocBuilder<CounterBloc, CounterState>(
                       builder: (context, state) {
-                        return state[room] == null
-                            ? CircularProgressIndicator()
-                            : Text(
-                                state[room].toString(),
-                                style: TextStyle(fontSize: 36),
-                              );
+                        if (state is LoadingCounterState) {
+                          return CircularProgressIndicator();
+                        }
+                        if (state is LiveCounterState) {
+                          return Text(
+                            state.value[room].toString(),
+                            style: TextStyle(fontSize: 36),
+                          );
+                        }
+                        throw FallThroughError();
                       },
                     ),
                   ),
