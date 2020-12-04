@@ -65,7 +65,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       });
       yield DebouncedCounterState(newState, newState);
       _resetDebounceTimer();
-      await _databaseService.modifyValue(event.index, event.change);
+      _databaseService.modifyValue(event.index, event.change);
     }
   }
 
