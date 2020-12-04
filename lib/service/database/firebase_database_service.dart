@@ -18,7 +18,7 @@ class FirebaseDatabaseService implements DatabaseService {
     return FirebaseFirestore.instance.runTransaction((transaction) async {
       final snapshot = await transaction.get(_documentReference);
 
-      int newValue = snapshot.data()[index] + change;
+      int newValue = snapshot.data()[index.toString()] + change;
       if (newValue < 0) {
         newValue = 0;
       }
@@ -35,10 +35,12 @@ class FirebaseDatabaseService implements DatabaseService {
 
   @override
   Stream<Map<int, int>> get valueStream =>
-      _documentReference.snapshots().map((doc) => {
-            0: doc.data()[0],
-            1: doc.data()[1],
-            2: doc.data()[2],
-            3: doc.data()[3],
-          });
+      _documentReference.snapshots().map((doc) {
+        return {
+          0: doc.data()['0'],
+          1: doc.data()['1'],
+          2: doc.data()['2'],
+          3: doc.data()['3'],
+        };
+      });
 }

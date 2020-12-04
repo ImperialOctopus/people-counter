@@ -11,7 +11,7 @@ class CounterBloc extends Bloc<CounterEvent, Map<int, int>> {
   /// Cubit to hold main count.
   CounterBloc({@required DatabaseService databaseService})
       : _databaseService = databaseService,
-        super(null) {
+        super({0: 0, 1: 0, 2: 0, 3: 0}) {
     _databaseService.valueStream.listen((value) {
       add(ReceivedChangeCounterEvent(value));
     });
@@ -24,6 +24,9 @@ class CounterBloc extends Bloc<CounterEvent, Map<int, int>> {
     }
     if (event is ModifyCounterEvent) {
       yield* _mapModifyToState(event);
+    }
+    if (event is SetCounterEvent) {
+      yield* _mapSetToState(event);
     }
   }
 
@@ -45,5 +48,9 @@ class CounterBloc extends Bloc<CounterEvent, Map<int, int>> {
     });
 
     await _databaseService.modifyValue(event.index, event.change);
+  }
+
+  Stream<Map<int, int>> _mapSetToState(SetCounterEvent event) async* {
+    _databaseService.setValue(event.index, event.value);
   }
 }

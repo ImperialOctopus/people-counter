@@ -31,3 +31,13 @@ class ModifyCounterEvent extends CounterEvent {
   @override
   List<Object> get props => [index, change];
 }
+
+class SetCounterEvent extends CounterEvent {
+  final int index;
+  final int value;
+
+  const SetCounterEvent(this.index, this.value);
+
+  @override
+  List<Object> get props => [index, value];
+}

@@ -21,6 +21,36 @@ class CounterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete_forever),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text("Reset Counter"),
+                content: Text(
+                    "This will reset the counter to zero.\nHas Steffi said you're allowed to do this?"),
+                actions: [
+                  FlatButton(
+                    child: Text("Cancel"),
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
+                  FlatButton(
+                    child: Text("Reset Counter"),
+                    onPressed: () => Navigator.of(context).pop(true),
+                  ),
+                ],
+              ),
+            ).then((value) {
+              if (value == true) {
+                BlocProvider.of<CounterBloc>(context)
+                    .add(SetCounterEvent(room, 0));
+              }
+            }),
+          ),
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 48),
         child: Column(
@@ -42,6 +72,7 @@ class CounterScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
+            Padding(padding: EdgeInsets.symmetric(vertical: 12)),
             Text(
               _roomNames[room],
               textAlign: TextAlign.center,
@@ -66,7 +97,7 @@ class CounterScreen extends StatelessWidget {
                         return state[room] == null
                             ? CircularProgressIndicator()
                             : Text(
-                                state.toString(),
+                                state[room].toString(),
                                 style: TextStyle(fontSize: 36),
                               );
                       },
