@@ -3,23 +3,29 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../service/database/database_service.dart';
+import '../../service/room/room_service.dart';
 import 'counter_event.dart';
 import 'counter_state.dart';
 
 /// Cubit to hold main count.
 class CounterBloc extends Bloc<CounterEvent, CounterState> {
-  final DatabaseService _databaseService;
+  final RoomService _roomService;
 
   Timer _timer;
 
   /// Cubit to hold main count.
-  CounterBloc({@required DatabaseService databaseService})
-      : _databaseService = databaseService,
+  CounterBloc({@required RoomService roomService})
+      : _roomService = roomService,
         super(const LoadingCounterState()) {
-    _databaseService.valueStream.listen((value) {
+    _roomService.valueStream.listen((value) {
       add(ReceivedChangeCounterEvent(value));
     });
+  }
+
+  @override
+  Future<void> close() {
+    _timer?.cancel();
+    return super.close();
   }
 
   @override
@@ -53,24 +59,28 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       return;
     } else {
       final currentState = (state as LiveCounterState).live;
-      final newState = currentState.map((key, value) {
-        if (key == event.index) {
-          return MapEntry(
-            key,
-            (value + event.change < 0) ? 0 : value + event.change,
-          );
-        } else {
-          return MapEntry(key, value);
-        }
-      });
+      final newState = currentState
+          .asMap()
+          .map((key, value) {
+            if (key == event.index) {
+              return MapEntry(
+                key,
+                (value + event.change < 0) ? 0 : value + event.change,
+              );
+            } else {
+              return MapEntry(key, value);
+            }
+          })
+          .values
+          .toList();
       yield DebouncedCounterState(newState, newState);
       _resetDebounceTimer();
-      _databaseService.modifyValue(event.index, event.change);
+      _roomService.modifyValue(event.index, event.change);
     }
   }
 
   Stream<CounterState> _mapSetToState(SetCounterEvent event) async* {
-    _databaseService.setValue(event.index, event.value);
+    _roomService.setValue(event.index, event.value);
   }
 
   Stream<CounterState> _mapDebounceEndedToState(

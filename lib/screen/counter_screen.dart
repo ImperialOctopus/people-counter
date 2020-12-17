@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:people_counter/bloc/counter/counter_state.dart';
 
 import '../bloc/counter/counter_bloc.dart';
 import '../bloc/counter/counter_event.dart';
+import '../bloc/counter/counter_state.dart';
 
 /// Main app screen with counter.
 class CounterScreen extends StatelessWidget {

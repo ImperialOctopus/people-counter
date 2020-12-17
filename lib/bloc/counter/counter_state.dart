@@ -12,8 +12,8 @@ class LoadingCounterState extends CounterState {
 }
 
 class LiveCounterState extends CounterState {
-  final Map<int, int> value;
-  Map<int, int> get live => value;
+  final List<int> value;
+  List<int> get live => value;
 
   const LiveCounterState(this.value);
 
@@ -22,9 +22,9 @@ class LiveCounterState extends CounterState {
 }
 
 class DebouncedCounterState extends LiveCounterState {
-  final Map<int, int> live;
+  final List<int> live;
 
-  const DebouncedCounterState(Map<int, int> value, this.live) : super(value);
+  const DebouncedCounterState(List<int> value, this.live) : super(value);
 
   @override
   List<Object> get props => [value, live];

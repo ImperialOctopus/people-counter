@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../service/room/room_service.dart';
 import 'counter_screen.dart';
 
-class MenuScreen extends StatelessWidget {
+class RoomScreen extends StatelessWidget {
+  final Future<RoomService> roomService;
+
+  const RoomScreen({@required this.roomService});
+
   static const List<String> _roomNames = [
     'Library Car Park',
     'Brook St. Car Park',
@@ -12,6 +17,21 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: roomService,
+      builder: (context, AsyncSnapshot<RoomService> snapshot) {
+        if (snapshot.hasError) {
+          return _buildError(context);
+        }
+        if (snapshot.hasData) {
+          return _buildRoomMenu(context);
+        }
+        return _buildLoading(context);
+      },
+    );
+  }
+
+  Widget _buildRoomMenu(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 48),
@@ -19,6 +39,7 @@ class MenuScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            /*
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: Center(
@@ -31,6 +52,12 @@ class MenuScreen extends StatelessWidget {
             ),
             Text(
               '''Tring Together\nNetworked People Counter''',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+            ),
+            */
+            Text(
+              ,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
             ),
@@ -74,5 +101,15 @@ class MenuScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildError(BuildContext context) {
+    return Scaffold(
+      body: Center(child: Text('Error connecting to that room.')),
+    );
+  }
+
+  Widget _buildLoading(BuildContext context) {
+    return Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }

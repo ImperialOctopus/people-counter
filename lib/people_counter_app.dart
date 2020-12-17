@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/counter/counter_bloc.dart';
-import 'screen/menu_screen.dart';
+import 'screen/room_select_screen.dart';
 import 'service/database/database_service.dart';
 import 'service/database/firebase_database_service.dart';
+import 'service/room/room_service.dart';
 import 'theme/theme.dart';
 
 /// Full app widget.
@@ -63,15 +64,18 @@ class AppView extends StatefulWidget {
 
 class _AppViewState extends State<AppView> {
   DatabaseService _databaseService;
+  RoomService _roomService;
+
   CounterBloc _counterBloc;
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
 
     _databaseService = FirebaseDatabaseService();
+    _roomService = await _databaseService.getRoom('tt_christmas');
 
-    _counterBloc = CounterBloc(databaseService: _databaseService);
+    _counterBloc = CounterBloc(roomService: _roomService);
   }
 
   @override
@@ -87,7 +91,7 @@ class _AppViewState extends State<AppView> {
           child: Navigator(
             pages: [
               MaterialPage(
-                child: MenuScreen(),
+                child: RoomSelectScreen(),
               ),
             ],
             onPopPage: (route, result) => route.didPop(result),

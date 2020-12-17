@@ -9,7 +9,7 @@ abstract class CounterEvent extends Equatable {
 /// Counter number changed.
 class ReceivedChangeCounterEvent extends CounterEvent {
   /// New value.
-  final Map<int, int> value;
+  final List<int> value;
 
   /// Counter number changed.
   const ReceivedChangeCounterEvent(this.value);
@@ -43,7 +43,7 @@ class SetCounterEvent extends CounterEvent {
 }
 
 class DebounceEndedEvent extends CounterEvent {
-  final Map<int, int> value;
+  final List<int> value;
 
   const DebounceEndedEvent(this.value);
 
