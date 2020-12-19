@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:people_counter/bloc/room/room_bloc.dart';
 
 import 'bloc/counter/counter_bloc.dart';
 import 'screen/room_select_screen.dart';
@@ -64,18 +65,16 @@ class AppView extends StatefulWidget {
 
 class _AppViewState extends State<AppView> {
   DatabaseService _databaseService;
-  RoomService _roomService;
 
-  CounterBloc _counterBloc;
+  RoomBloc _roomBloc;
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
 
     _databaseService = FirebaseDatabaseService();
-    _roomService = await _databaseService.getRoom('tt_christmas');
 
-    _counterBloc = CounterBloc(roomService: _roomService);
+    _roomBloc = RoomBloc();
   }
 
   @override
@@ -86,7 +85,7 @@ class _AppViewState extends State<AppView> {
       ],
       child: MultiBlocProvider(
           providers: [
-            BlocProvider<CounterBloc>.value(value: _counterBloc),
+            BlocProvider<RoomBloc>.value(value: _roomBloc),
           ],
           child: Navigator(
             pages: [

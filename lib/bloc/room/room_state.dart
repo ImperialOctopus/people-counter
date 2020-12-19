@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:people_counter/service/room/room_service.dart';
 
 abstract class RoomState extends Equatable {
   const RoomState();
@@ -11,11 +12,27 @@ class OutRoom extends RoomState {
   List<Object> get props => [];
 }
 
-class InRoom extends RoomState {
-  final String roomName;
+class LoadingRoom extends RoomState {
+  @override
+  List<Object> get props => [];
+}
 
-  const InRoom(this.roomName);
+class InRoom extends RoomState {
+  final RoomService roomService;
+  final String name;
+  final List<String> placeNames;
+
+  const InRoom(this.roomService, this.name, this.placeNames);
 
   @override
-  List<Object> get props => [roomName];
+  List<Object> get props => [roomService, name, placeNames];
+}
+
+class RoomLoadError extends RoomState {
+  final String message;
+
+  const RoomLoadError(this.message);
+
+  @override
+  List<Object> get props => [message];
 }

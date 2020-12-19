@@ -4,34 +4,10 @@ import '../service/room/room_service.dart';
 import 'counter_screen.dart';
 
 class RoomScreen extends StatelessWidget {
-  final Future<RoomService> roomService;
-
-  const RoomScreen({@required this.roomService});
-
-  static const List<String> _roomNames = [
-    'Library Car Park',
-    'Brook St. Car Park',
-    'Memorial Garden',
-    'Church',
-  ];
+  const RoomScreen();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: roomService,
-      builder: (context, AsyncSnapshot<RoomService> snapshot) {
-        if (snapshot.hasError) {
-          return _buildError(context);
-        }
-        if (snapshot.hasData) {
-          return _buildRoomMenu(context);
-        }
-        return _buildLoading(context);
-      },
-    );
-  }
-
-  Widget _buildRoomMenu(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 48),
@@ -57,7 +33,7 @@ class RoomScreen extends StatelessWidget {
             ),
             */
             Text(
-              ,
+              title,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
             ),
@@ -66,12 +42,12 @@ class RoomScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _menuButton(context, 0),
-                  _menuButton(context, 1),
-                  _menuButton(context, 2),
-                  _menuButton(context, 3),
-                ],
+                children: placeNames
+                    .asMap()
+                    .entries
+                    .map((mapEntry) =>
+                        _menuButton(context, mapEntry.value, mapEntry.key))
+                    .toList(),
               ),
             ),
           ],
@@ -80,7 +56,7 @@ class RoomScreen extends StatelessWidget {
     );
   }
 
-  Widget _menuButton(BuildContext context, int index) {
+  Widget _menuButton(BuildContext context, String label, int index) {
     return Padding(
       padding: EdgeInsets.all(8),
       child: ConstrainedBox(
@@ -90,7 +66,7 @@ class RoomScreen extends StatelessWidget {
         ),
         child: ElevatedButton(
           child: Text(
-            _roomNames[index],
+            label,
             style: TextStyle(fontSize: 18),
           ),
           onPressed: () => Navigator.of(context).push(
@@ -101,15 +77,5 @@ class RoomScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _buildError(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text('Error connecting to that room.')),
-    );
-  }
-
-  Widget _buildLoading(BuildContext context) {
-    return Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }
