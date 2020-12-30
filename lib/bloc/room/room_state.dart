@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:people_counter/service/room/room_service.dart';
+
+import '../../service/room/room_service.dart';
 
 abstract class RoomState extends Equatable {
   const RoomState();

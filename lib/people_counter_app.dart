@@ -1,13 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:people_counter/bloc/room/room_bloc.dart';
 
-import 'bloc/counter/counter_bloc.dart';
+import 'bloc/room/room_bloc.dart';
 import 'screen/room_select_screen.dart';
 import 'service/database/database_service.dart';
 import 'service/database/firebase_database_service.dart';
-import 'service/room/room_service.dart';
 import 'theme/theme.dart';
 
 /// Full app widget.
@@ -74,7 +72,7 @@ class _AppViewState extends State<AppView> {
 
     _databaseService = FirebaseDatabaseService();
 
-    _roomBloc = RoomBloc();
+    _roomBloc = RoomBloc(_databaseService);
   }
 
   @override

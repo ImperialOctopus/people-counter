@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../service/room/room_service.dart';
+import '../bloc/room/room_bloc.dart';
+import '../bloc/room/room_state.dart';
+import '../component/invalid_state_component.dart';
 import 'counter_screen.dart';
 
 class RoomScreen extends StatelessWidget {
@@ -9,13 +12,15 @@ class RoomScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 48),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            /*
+      body: BlocBuilder<RoomBloc, RoomState>(builder: (context, state) {
+        if (state is InRoom) {
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 48),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                /*
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: Center(
@@ -32,27 +37,31 @@ class RoomScreen extends StatelessWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
             ),
             */
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                Text(
+                  state.name,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: state.placeNames
+                        .asMap()
+                        .entries
+                        .map((mapEntry) =>
+                            _menuButton(context, mapEntry.value, mapEntry.key))
+                        .toList(),
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: placeNames
-                    .asMap()
-                    .entries
-                    .map((mapEntry) =>
-                        _menuButton(context, mapEntry.value, mapEntry.key))
-                    .toList(),
-              ),
-            ),
-          ],
-        ),
-      ),
+          );
+        } else {
+          return InvalidStateComponent();
+        }
+      }),
     );
   }
 
