@@ -32,7 +32,7 @@ class InRoom extends RoomState {
 class RoomLoadError extends RoomState {
   final String message;
 
-  const RoomLoadError(this.message);
+  const RoomLoadError([this.message]);
 
   @override
   List<Object> get props => [message];

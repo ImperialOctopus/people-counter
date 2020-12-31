@@ -16,4 +16,17 @@ final themeData = ThemeData(
   // the app on. For desktop platforms, the controls will be smaller and
   // closer together (more dense) than on mobile platforms.
   visualDensity: VisualDensity.adaptivePlatformDensity,
+
+  textTheme: TextTheme(
+    headline1: TextStyle(fontSize: 42),
+    headline2: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+  ),
+
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      //primary: Color.fromARGB(255, 181, 51, 70),
+      textStyle: TextStyle(fontSize: 32),
+      minimumSize: Size(200, 65),
+    ),
+  ),
 );

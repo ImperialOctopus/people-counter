@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:people_counter/screen/preset_room_screen.dart';
+import 'package:people_counter/screen/room_select_screen.dart';
 
 import 'bloc/room/room_bloc.dart';
-import 'screen/room_select_screen.dart';
+import 'config.dart' as config;
+import 'screen/room_navigator.dart';
 import 'service/database/database_service.dart';
 import 'service/database/firebase_database_service.dart';
 import 'theme/theme.dart';
@@ -26,7 +29,7 @@ class _PeopleCounterAppState extends State<PeopleCounterApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Tring Together People Counter',
+      title: config.appTitle,
       theme: themeData,
       home: FutureBuilder(
         future: _initialization,
@@ -88,7 +91,11 @@ class _AppViewState extends State<AppView> {
           child: Navigator(
             pages: [
               MaterialPage(
-                child: RoomSelectScreen(),
+                child: RoomNavigator(
+                  roomSelect: config.presetRoom
+                      ? PresetRoomScreen(roomName: config.presetName)
+                      : RoomSelectScreen(title: config.appTitle),
+                ),
               ),
             ],
             onPopPage: (route, result) => route.didPop(result),

@@ -22,12 +22,18 @@ class FirebaseRoomService implements RoomService {
 
   @override
   Future<List<String>> get placeNames async {
-    return (await _collectionReference.doc(roomNamesRef).get()).data().values;
+    return (await _collectionReference.doc(roomNamesRef).get())
+        .data()
+        .values
+        .map((e) => e.toString())
+        .toList();
   }
 
   @override
   Future<String> get roomTitle async {
-    return (await _collectionReference.doc(metaRef).get()).data()[metaRefName];
+    return (await _collectionReference.doc(metaRef)?.get())
+        ?.data()[metaRefName]
+        ?.toString();
   }
 
   @override
@@ -55,7 +61,7 @@ class FirebaseRoomService implements RoomService {
 
   @override
   Stream<List<int>> get valueStream =>
-      _collectionReference.doc(valuesRef).snapshots().map((doc) {
-        return doc.data().values;
+      _collectionReference.doc(valuesRef).snapshots().map<List<int>>((doc) {
+        return doc.data().values.map((e) => int.parse(e.toString())).toList();
       });
 }

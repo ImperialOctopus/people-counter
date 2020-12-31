@@ -28,7 +28,7 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
 
       yield InRoom(roomService, title, placeNames);
     } catch (e) {
-      yield RoomLoadError(e);
+      yield RoomLoadError();
     }
   }
 }
