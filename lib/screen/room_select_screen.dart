@@ -93,7 +93,7 @@ class _RoomSelectScreenState extends State<RoomSelectScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                             ),
-                            ElevatedButton(
+                            OutlinedButton(
                               child: Text('Register New Event'),
                               onPressed: () => showDialog(
                                 context: context,
