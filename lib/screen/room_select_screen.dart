@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:people_counter/extension/lowercase_text_formatter.dart';
 
 import '../bloc/room/room_bloc.dart';
 import '../bloc/room/room_event.dart';
 import '../bloc/room/room_state.dart';
+import '../extension/lowercase_text_formatter.dart';
 
 class RoomSelectScreen extends StatefulWidget {
   final String title;

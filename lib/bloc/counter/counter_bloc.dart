@@ -12,12 +12,13 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   final RoomService _roomService;
 
   Timer _timer;
+  StreamSubscription _streamSubscription;
 
   /// Cubit to hold main count.
   CounterBloc({@required RoomService roomService})
       : _roomService = roomService,
         super(const LoadingCounterState()) {
-    _roomService.valueStream.listen((value) {
+    _streamSubscription = _roomService.valueStream.listen((value) {
       add(ReceivedChangeCounterEvent(value));
     });
   }
@@ -25,6 +26,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   @override
   Future<void> close() {
     _timer?.cancel();
+    _streamSubscription?.cancel();
     return super.close();
   }
 
@@ -36,8 +38,8 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     if (event is ModifyCounterEvent) {
       yield* _mapModifyToState(event);
     }
-    if (event is SetCounterEvent) {
-      yield* _mapSetToState(event);
+    if (event is ResetCounterEvent) {
+      yield* _mapResetToState(event);
     }
     if (event is DebounceEndedEvent) {
       yield* _mapDebounceEndedToState(event);
@@ -75,12 +77,16 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
           .toList();
       yield DebouncedCounterState(newState, newState);
       _resetDebounceTimer();
-      _roomService.modifyValue(event.index, event.change);
+      if (event.change == 1) {
+        _roomService.incrementLocation(event.index);
+      } else {
+        _roomService.decrementLocation(event.index);
+      }
     }
   }
 
-  Stream<CounterState> _mapSetToState(SetCounterEvent event) async* {
-    _roomService.setValue(event.index, event.value);
+  Stream<CounterState> _mapResetToState(ResetCounterEvent event) async* {
+    _roomService.resetLocation(event.index);
   }
 
   Stream<CounterState> _mapDebounceEndedToState(

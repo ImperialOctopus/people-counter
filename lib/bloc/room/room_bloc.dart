@@ -27,6 +27,8 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       final placeNames = await roomService.placeNames;
 
       yield InRoom(roomService, title, placeNames);
+      // Error changes by platform
+      // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       yield RoomLoadError();
     }

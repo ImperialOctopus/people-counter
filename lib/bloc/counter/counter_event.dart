@@ -18,28 +18,38 @@ class ReceivedChangeCounterEvent extends CounterEvent {
   List<Object> get props => [value];
 }
 
-/// Modify counter.
-class ModifyCounterEvent extends CounterEvent {
+abstract class ModifyCounterEvent extends CounterEvent {
   final int index;
 
-  /// Number to change by.
-  final int change;
+  int get change;
 
-  /// Modify counter.
-  const ModifyCounterEvent(this.index, this.change);
+  const ModifyCounterEvent(this.index);
 
   @override
-  List<Object> get props => [index, change];
+  List<Object> get props => [index];
 }
 
-class SetCounterEvent extends CounterEvent {
-  final int index;
-  final int value;
-
-  const SetCounterEvent(this.index, this.value);
+class IncrementCounterEvent extends ModifyCounterEvent {
+  const IncrementCounterEvent(int index) : super(index);
 
   @override
-  List<Object> get props => [index, value];
+  int get change => 1;
+}
+
+class DecrementCounterEvent extends ModifyCounterEvent {
+  const DecrementCounterEvent(int index) : super(index);
+
+  @override
+  int get change => -1;
+}
+
+class ResetCounterEvent extends CounterEvent {
+  final int index;
+
+  const ResetCounterEvent(this.index);
+
+  @override
+  List<Object> get props => [index];
 }
 
 class DebounceEndedEvent extends CounterEvent {

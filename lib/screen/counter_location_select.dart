@@ -5,6 +5,7 @@ import '../bloc/room/room_bloc.dart';
 import '../bloc/room/room_event.dart';
 import '../bloc/room/room_state.dart';
 import 'counter_screen.dart';
+import 'stats_screen.dart';
 
 class CounterLocationSelect extends StatelessWidget {
   final InRoom roomState;
@@ -54,12 +55,11 @@ class CounterLocationSelect extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: roomState.placeNames
-                    .asMap()
-                    .entries
-                    .map((mapEntry) =>
-                        _menuButton(context, mapEntry.value, mapEntry.key))
-                    .toList(),
+                children: [
+                  ...roomState.placeNames.asMap().entries.map((mapEntry) =>
+                      _locationButton(context, mapEntry.value, mapEntry.key)),
+                  _statsButton(context)
+                ],
               ),
             ),
           ],
@@ -68,7 +68,7 @@ class CounterLocationSelect extends StatelessWidget {
     );
   }
 
-  Widget _menuButton(BuildContext context, String label, int index) {
+  Widget _locationButton(BuildContext context, String label, int index) {
     return Padding(
       padding: EdgeInsets.all(8),
       child: ElevatedButton(
@@ -79,6 +79,23 @@ class CounterLocationSelect extends StatelessWidget {
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => CounterScreen(title: label, index: index),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _statsButton(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: OutlinedButton(
+        child: Text(
+          'Stats',
+          style: TextStyle(fontSize: 18),
+        ),
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => StatsScreen(title: roomState.name),
           ),
         ),
       ),

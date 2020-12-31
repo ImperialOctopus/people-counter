@@ -41,7 +41,7 @@ class CounterScreen extends StatelessWidget {
             ).then((value) {
               if (value == true) {
                 BlocProvider.of<CounterBloc>(context)
-                    .add(SetCounterEvent(index, 0));
+                    .add(ResetCounterEvent(index));
               }
             }),
           ),
@@ -81,7 +81,7 @@ class CounterScreen extends StatelessWidget {
                     iconSize: 48,
                     icon: Icon(Icons.arrow_upward),
                     onPressed: () => BlocProvider.of<CounterBloc>(context)
-                        .add(ModifyCounterEvent(index, 1)),
+                        .add(IncrementCounterEvent(index)),
                   ),
                   Padding(
                     padding: EdgeInsets.all(24),
@@ -104,7 +104,7 @@ class CounterScreen extends StatelessWidget {
                     iconSize: 48,
                     icon: Icon(Icons.arrow_downward),
                     onPressed: () => BlocProvider.of<CounterBloc>(context)
-                        .add(ModifyCounterEvent(index, -1)),
+                        .add(DecrementCounterEvent(index)),
                   ),
                 ],
               ),
