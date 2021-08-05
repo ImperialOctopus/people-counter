@@ -11,7 +11,7 @@ class CounterScreen extends StatelessWidget {
   final int index;
 
   /// Main app screen with counter.
-  const CounterScreen({@required this.title, @required this.index});
+  const CounterScreen({required this.title, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +28,11 @@ class CounterScreen extends StatelessWidget {
                     // ignore: lines_longer_than_80_chars
                     "This will reset the counter to zero.\nAre you sure?"),
                 actions: [
-                  FlatButton(
+                  TextButton(
                     child: Text("Cancel"),
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text("Reset Counter"),
                     onPressed: () => Navigator.of(context).pop(true),
                   ),

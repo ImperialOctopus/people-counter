@@ -10,7 +10,7 @@ import 'stats_screen.dart';
 class CounterLocationSelect extends StatelessWidget {
   final InRoom roomState;
 
-  const CounterLocationSelect({@required this.roomState});
+  const CounterLocationSelect({required this.roomState});
 
   @override
   Widget build(BuildContext context) {

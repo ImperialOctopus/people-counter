@@ -1,28 +1,27 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../service/room/room_service.dart';
+import '../../service/room/room_connection.dart';
 import 'stats_event.dart';
 import 'stats_state.dart';
 
 class StatsBloc extends Bloc<StatsEvent, StatsState> {
-  final RoomService _roomService;
+  final RoomConnection _roomConnection;
 
-  StreamSubscription _streamSubscription;
+  late final StreamSubscription _streamSubscription;
 
-  StatsBloc({@required RoomService roomService})
-      : _roomService = roomService,
+  StatsBloc({required RoomConnection roomConnection})
+      : _roomConnection = roomConnection,
         super(const StatsLoading()) {
-    _streamSubscription = _roomService.statsStream.listen((value) {
+    _streamSubscription = _roomConnection.statsStream.listen((value) {
       add(StatsChangedEvent(value));
     });
   }
 
   @override
   Future<void> close() {
-    _streamSubscription?.cancel();
+    _streamSubscription.cancel();
     return super.close();
   }
 
@@ -32,7 +31,7 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
       yield StatsLoaded(event.snapshot);
     }
     if (event is ResetStatsEvent) {
-      _roomService.resetStats();
+      _roomConnection.resetStats();
     }
   }
 }

@@ -8,7 +8,7 @@ import '../bloc/stats/stats_state.dart';
 class StatsScreen extends StatelessWidget {
   final String title;
 
-  const StatsScreen({@required this.title});
+  const StatsScreen({required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +25,11 @@ class StatsScreen extends StatelessWidget {
                     // ignore: lines_longer_than_80_chars
                     "This will reset all stats for this event.\nAre you sure?"),
                 actions: [
-                  FlatButton(
+                  TextButton(
                     child: Text("Cancel"),
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text("Reset Stats"),
                     onPressed: () => Navigator.of(context).pop(true),
                   ),

@@ -11,7 +11,7 @@ class RoomNavigator extends StatelessWidget {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 
-  const RoomNavigator({@required this.roomSelect});
+  const RoomNavigator({required this.roomSelect});
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +31,14 @@ class RoomNavigator extends StatelessWidget {
 
   void _onRoomBlocChanged(BuildContext context, RoomState state) {
     if (state is InRoom) {
-      navigatorKey.currentState.push(
+      navigatorKey.currentState?.push(
         MaterialPageRoute(
           builder: (context) => CounterNavigator(state: state),
         ),
       );
     }
     if (state is OutRoom) {
-      navigatorKey.currentState.pop();
+      navigatorKey.currentState?.pop();
     }
   }
 }

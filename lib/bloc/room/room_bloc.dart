@@ -22,9 +22,9 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
   Stream<RoomState> _mapEnterRoomToState(EnterRoomEvent event) async* {
     yield LoadingRoom();
     try {
-      final roomService = await databaseService.getRoom(event.roomName);
-      final title = await roomService.roomTitle;
-      final placeNames = await roomService.placeNames;
+      final roomService = await databaseService.getRoomByName(event.roomName);
+      final title = await roomService.title;
+      final placeNames = await roomService.locations;
 
       yield InRoom(roomService, title, placeNames);
       // Error changes by platform

@@ -9,16 +9,18 @@ import 'counter_location_select.dart';
 class CounterNavigator extends StatelessWidget {
   final InRoom state;
 
-  const CounterNavigator({@required this.state});
+  const CounterNavigator({required this.state});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<CounterBloc>(
-            create: (context) => CounterBloc(roomService: state.roomService)),
+            create: (context) =>
+                CounterBloc(roomConnection: state.roomConnection)),
         BlocProvider<StatsBloc>(
-            create: (context) => StatsBloc(roomService: state.roomService)),
+            create: (context) =>
+                StatsBloc(roomConnection: state.roomConnection)),
       ],
       child: Navigator(
         pages: [

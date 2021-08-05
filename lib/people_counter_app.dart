@@ -18,7 +18,7 @@ class PeopleCounterApp extends StatefulWidget {
 }
 
 class _PeopleCounterAppState extends State<PeopleCounterApp> {
-  Future<FirebaseApp> _initialization;
+  late final Future<FirebaseApp> _initialization;
 
   @override
   void initState() {
@@ -65,9 +65,9 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
-  DatabaseService _databaseService;
+  late final RoomBloc _roomBloc;
 
-  RoomBloc _roomBloc;
+  late final DatabaseService _databaseService;
 
   @override
   void initState() {

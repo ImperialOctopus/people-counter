@@ -9,7 +9,7 @@ class PresetRoomScreen extends StatelessWidget {
   final String title;
   final String roomName;
 
-  const PresetRoomScreen({@required this.title, @required this.roomName});
+  const PresetRoomScreen({required this.title, required this.roomName});
 
   @override
   Widget build(BuildContext context) {

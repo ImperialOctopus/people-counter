@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../service/room/room_service.dart';
+import '../../service/room/room_connection.dart';
 
 abstract class RoomState extends Equatable {
   const RoomState();
@@ -19,20 +19,20 @@ class LoadingRoom extends RoomState {
 }
 
 class InRoom extends RoomState {
-  final RoomService roomService;
+  final RoomConnection roomConnection;
   final String name;
   final List<String> placeNames;
 
-  const InRoom(this.roomService, this.name, this.placeNames);
+  const InRoom(this.roomConnection, this.name, this.placeNames);
 
   @override
-  List<Object> get props => [roomService, name, placeNames];
+  List<Object> get props => [roomConnection, name, placeNames];
 }
 
 class RoomLoadError extends RoomState {
   final String message;
 
-  const RoomLoadError([this.message]);
+  const RoomLoadError([this.message = '']);
 
   @override
   List<Object> get props => [message];

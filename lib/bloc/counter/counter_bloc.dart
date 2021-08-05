@@ -1,24 +1,23 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../service/room/room_service.dart';
+import '../../service/room/room_connection.dart';
 import 'counter_event.dart';
 import 'counter_state.dart';
 
 /// Cubit to hold main count.
 class CounterBloc extends Bloc<CounterEvent, CounterState> {
-  final RoomService _roomService;
+  final RoomConnection _roomConnection;
 
-  Timer _timer;
-  StreamSubscription _streamSubscription;
+  Timer? _timer;
+  late final StreamSubscription _streamSubscription;
 
   /// Cubit to hold main count.
-  CounterBloc({@required RoomService roomService})
-      : _roomService = roomService,
+  CounterBloc({required RoomConnection roomConnection})
+      : _roomConnection = roomConnection,
         super(const LoadingCounterState()) {
-    _streamSubscription = _roomService.valueStream.listen((value) {
+    _streamSubscription = _roomConnection.valuesStream.listen((value) {
       add(ReceivedChangeCounterEvent(value));
     });
   }
@@ -26,7 +25,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   @override
   Future<void> close() {
     _timer?.cancel();
-    _streamSubscription?.cancel();
+    _streamSubscription.cancel();
     return super.close();
   }
 
@@ -78,15 +77,15 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       yield DebouncedCounterState(newState, newState);
       _resetDebounceTimer();
       if (event.change == 1) {
-        _roomService.incrementLocation(event.index);
+        _roomConnection.incrementLocation(event.index);
       } else {
-        _roomService.decrementLocation(event.index);
+        _roomConnection.decrementLocation(event.index);
       }
     }
   }
 
   Stream<CounterState> _mapResetToState(ResetCounterEvent event) async* {
-    _roomService.resetLocation(event.index);
+    _roomConnection.resetLocation(event.index);
   }
 
   Stream<CounterState> _mapDebounceEndedToState(

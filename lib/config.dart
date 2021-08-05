@@ -1,6 +1,6 @@
-const String appTitle = 'People Counter';
+const String appTitle = 'Tring Carnival 2021';
 
 // If false, displays a room code text box to enter the room.
-const bool presetRoom = false;
+const bool presetRoom = true;
 // Preset room to join if presetRoom is true.
-const String presetName = 'test_rooom';
+const String presetName = 't_carnival_2021';

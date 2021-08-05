@@ -9,7 +9,7 @@ import '../extension/lowercase_text_formatter.dart';
 class RoomSelectScreen extends StatefulWidget {
   final String title;
 
-  const RoomSelectScreen({@required this.title});
+  const RoomSelectScreen({required this.title});
 
   @override
   _RoomSelectScreenState createState() => _RoomSelectScreenState();
@@ -103,7 +103,7 @@ class _RoomSelectScreenState extends State<RoomSelectScreen> {
                                       // ignore: lines_longer_than_80_chars
                                       "To register new events contact imperialoctopus@gmail.com with details of your event."),
                                   actions: [
-                                    FlatButton(
+                                    TextButton(
                                       child: Text("Close"),
                                       onPressed: () =>
                                           Navigator.of(context).pop(),
