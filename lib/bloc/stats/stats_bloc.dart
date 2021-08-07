@@ -9,21 +9,9 @@ import 'stats_state.dart';
 class StatsBloc extends Bloc<StatsEvent, StatsState> {
   final RoomConnection _roomConnection;
 
-  late final StreamSubscription _streamSubscription;
-
   StatsBloc({required RoomConnection roomConnection})
       : _roomConnection = roomConnection,
-        super(const StatsLoading()) {
-    _streamSubscription = _roomConnection.statsStream.listen((value) {
-      add(StatsChangedEvent(value));
-    });
-  }
-
-  @override
-  Future<void> close() {
-    _streamSubscription.cancel();
-    return super.close();
-  }
+        super(const StatsLoading());
 
   @override
   Stream<StatsState> mapEventToState(StatsEvent event) async* {

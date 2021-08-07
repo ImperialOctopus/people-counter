@@ -67,10 +67,6 @@ class StatsScreen extends StatelessWidget {
                       Column(
                         children: [
                           Text('Total Entries:'),
-                          Text(
-                            state.snapshot.totalEntries.toString(),
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
                         ],
                       )
                     ],

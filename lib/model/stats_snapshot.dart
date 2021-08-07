@@ -1,5 +1,11 @@
-class StatsSnapshot {
-  final int totalEntries;
+import 'package:equatable/equatable.dart';
+import 'package:people_counter/model/log_entry.dart';
 
-  const StatsSnapshot({required this.totalEntries});
+class StatsSnapshot extends Equatable {
+  final List<LogEntry> logs;
+
+  const StatsSnapshot({required this.logs});
+
+  @override
+  List<Object?> get props => logs;
 }

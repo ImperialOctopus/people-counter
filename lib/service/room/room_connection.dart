@@ -1,22 +1,21 @@
-import '../../model/stats_snapshot.dart';
+import '../../model/log_entry.dart';
 
 /// Interface for database service.
 abstract class RoomConnection {
-  /// Modify stored value. May use transactions for safety.
+  // Modify stored value. May use transactions for safety.
   Future<void> incrementLocation(int index);
   Future<void> decrementLocation(int index);
-
   Future<void> resetLocation(int index);
 
-  Future<void> resetStats();
-
-  /// Gets stored value from the database.
-  Stream<List<int>> get valuesStream;
-
-  /// Stream of total people entered from stats
-  Stream<StatsSnapshot> get statsStream;
-
+  // Gets stored values from the database.
+  Future<String> get title;
   Future<List<String>> get locations;
 
-  Future<String> get title;
+  Stream<List<int>> get valuesStream;
+
+  // Stats
+  Future<List<LogEntry>> get stats;
+  Future<void> resetStats();
+
+  Future<void> resetAll();
 }
