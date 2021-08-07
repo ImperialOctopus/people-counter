@@ -11,7 +11,8 @@ class CounterScreen extends StatelessWidget {
   final int index;
 
   /// Main app screen with counter.
-  const CounterScreen({required this.title, required this.index});
+  const CounterScreen({required this.title, required this.index, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,21 +20,21 @@ class CounterScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.delete_forever),
+            icon: const Icon(Icons.delete_forever),
             onPressed: () => showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text("Reset Counter"),
-                content: Text(
+                title: const Text("Reset Counter"),
+                content: const Text(
                     // ignore: lines_longer_than_80_chars
                     "This will reset the counter to zero.\nAre you sure?"),
                 actions: [
                   TextButton(
-                    child: Text("Cancel"),
+                    child: const Text("Cancel"),
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
                   TextButton(
-                    child: Text("Reset Counter"),
+                    child: const Text("Reset Counter"),
                     onPressed: () => Navigator.of(context).pop(true),
                   ),
                 ],
@@ -48,7 +49,7 @@ class CounterScreen extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 48),
+        padding: const EdgeInsets.symmetric(vertical: 48),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -65,11 +66,11 @@ class CounterScreen extends StatelessWidget {
               ),
             ),
             */
-            Padding(padding: EdgeInsets.symmetric(vertical: 12)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 12)),
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
             ),
             Expanded(
               child: Column(
@@ -79,21 +80,21 @@ class CounterScreen extends StatelessWidget {
                 children: [
                   IconButton(
                     iconSize: 48,
-                    icon: Icon(Icons.arrow_upward),
+                    icon: const Icon(Icons.arrow_upward),
                     onPressed: () => BlocProvider.of<CounterBloc>(context)
                         .add(IncrementCounterEvent(index)),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(24),
                     child: BlocBuilder<CounterBloc, CounterState>(
                       builder: (context, state) {
                         if (state is LoadingCounterState) {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         }
                         if (state is LiveCounterState) {
                           return Text(
                             state.value[index].toString(),
-                            style: TextStyle(fontSize: 36),
+                            style: const TextStyle(fontSize: 36),
                           );
                         }
                         throw FallThroughError();
@@ -102,7 +103,7 @@ class CounterScreen extends StatelessWidget {
                   ),
                   IconButton(
                     iconSize: 48,
-                    icon: Icon(Icons.arrow_downward),
+                    icon: const Icon(Icons.arrow_downward),
                     onPressed: () => BlocProvider.of<CounterBloc>(context)
                         .add(DecrementCounterEvent(index)),
                   ),

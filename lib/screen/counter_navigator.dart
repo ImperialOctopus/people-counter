@@ -9,7 +9,7 @@ import 'counter_location_select.dart';
 class CounterNavigator extends StatelessWidget {
   final InRoom state;
 
-  const CounterNavigator({required this.state});
+  const CounterNavigator({required this.state, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -4,5 +4,5 @@ import 'people_counter_app.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(PeopleCounterApp());
+  runApp(const PeopleCounterApp());
 }

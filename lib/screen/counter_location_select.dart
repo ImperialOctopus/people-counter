@@ -10,20 +10,21 @@ import 'stats_screen.dart';
 class CounterLocationSelect extends StatelessWidget {
   final InRoom roomState;
 
-  const CounterLocationSelect({required this.roomState});
+  const CounterLocationSelect({required this.roomState, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () =>
               BlocProvider.of<RoomBloc>(context).add(const LeaveRoomEvent()),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 48),
+        padding: const EdgeInsets.symmetric(vertical: 48),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -48,7 +49,7 @@ class CounterLocationSelect extends StatelessWidget {
             Text(
               roomState.name,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
             ),
             Expanded(
               child: Column(
@@ -70,11 +71,11 @@ class CounterLocationSelect extends StatelessWidget {
 
   Widget _locationButton(BuildContext context, String label, int index) {
     return Padding(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: ElevatedButton(
         child: Text(
           label,
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18),
         ),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
@@ -87,9 +88,9 @@ class CounterLocationSelect extends StatelessWidget {
 
   Widget _statsButton(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: OutlinedButton(
-        child: Text(
+        child: const Text(
           'Stats',
           style: TextStyle(fontSize: 18),
         ),

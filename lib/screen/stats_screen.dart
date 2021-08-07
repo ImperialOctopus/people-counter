@@ -8,7 +8,7 @@ import '../bloc/stats/stats_state.dart';
 class StatsScreen extends StatelessWidget {
   final String title;
 
-  const StatsScreen({required this.title});
+  const StatsScreen({required this.title, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,21 +16,21 @@ class StatsScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.delete_forever),
+            icon: const Icon(Icons.delete_forever),
             onPressed: () => showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text("Reset Stats"),
-                content: Text(
+                title: const Text("Reset Stats"),
+                content: const Text(
                     // ignore: lines_longer_than_80_chars
                     "This will reset all stats for this event.\nAre you sure?"),
                 actions: [
                   TextButton(
-                    child: Text("Cancel"),
+                    child: const Text("Cancel"),
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
                   TextButton(
-                    child: Text("Reset Stats"),
+                    child: const Text("Reset Stats"),
                     onPressed: () => Navigator.of(context).pop(true),
                   ),
                 ],
@@ -45,18 +45,19 @@ class StatsScreen extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 48),
+        padding: const EdgeInsets.symmetric(vertical: 48),
         child: BlocBuilder<StatsBloc, StatsState>(builder: (context, state) {
           if (state is StatsLoaded) {
             return Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Padding(padding: EdgeInsets.symmetric(vertical: 12)),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 12)),
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.w500),
                 ),
                 Expanded(
                   child: Column(
@@ -65,7 +66,7 @@ class StatsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Column(
-                        children: [
+                        children: const [
                           Text('Total Entries:'),
                         ],
                       )
@@ -75,7 +76,7 @@ class StatsScreen extends StatelessWidget {
               ],
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         }),
       ),

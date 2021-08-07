@@ -95,7 +95,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
 
   void _resetDebounceTimer() {
     _timer?.cancel();
-    _timer = Timer(Duration(milliseconds: 200), _debounceDelayEnded);
+    _timer = Timer(const Duration(milliseconds: 200), _debounceDelayEnded);
   }
 
   void _debounceDelayEnded() {

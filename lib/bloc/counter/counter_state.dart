@@ -22,6 +22,7 @@ class LiveCounterState extends CounterState {
 }
 
 class DebouncedCounterState extends LiveCounterState {
+  @override
   final List<int> live;
 
   const DebouncedCounterState(List<int> value, this.live) : super(value);

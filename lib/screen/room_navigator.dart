@@ -11,7 +11,7 @@ class RoomNavigator extends StatelessWidget {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 
-  const RoomNavigator({required this.roomSelect});
+  const RoomNavigator({required this.roomSelect, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

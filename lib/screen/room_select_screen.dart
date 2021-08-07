@@ -9,7 +9,7 @@ import '../extension/lowercase_text_formatter.dart';
 class RoomSelectScreen extends StatefulWidget {
   final String title;
 
-  const RoomSelectScreen({required this.title});
+  const RoomSelectScreen({required this.title, Key? key}) : super(key: key);
 
   @override
   _RoomSelectScreenState createState() => _RoomSelectScreenState();
@@ -29,7 +29,7 @@ class _RoomSelectScreenState extends State<RoomSelectScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 48),
+        padding: const EdgeInsets.symmetric(vertical: 48),
         child: Center(
           child: BlocBuilder<RoomBloc, RoomState>(
             builder: (context, state) => Column(
@@ -45,14 +45,14 @@ class _RoomSelectScreenState extends State<RoomSelectScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
+                  child: SizedBox(
                     width: 350,
                     child: TextFormField(
                       controller: roomCodeController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(),
+                          borderSide: const BorderSide(),
                         ),
                       ),
                       textAlign: TextAlign.center,
@@ -77,11 +77,11 @@ class _RoomSelectScreenState extends State<RoomSelectScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: (state is LoadingRoom || state is InRoom)
-                      ? CircularProgressIndicator()
+                      ? const CircularProgressIndicator()
                       : Column(
                           children: [
                             ElevatedButton(
-                              child: Text('Join Event'),
+                              child: const Text('Join Event'),
                               onPressed: _submitEnabled
                                   ? () {
                                       BlocProvider.of<RoomBloc>(context).add(
@@ -90,21 +90,21 @@ class _RoomSelectScreenState extends State<RoomSelectScreen> {
                                     }
                                   : null,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
                             ),
                             OutlinedButton(
-                              child: Text('Register New Event'),
+                              child: const Text('Register New Event'),
                               onPressed: () => showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                  title: Text("Register New Event"),
-                                  content: Text(
+                                  title: const Text("Register New Event"),
+                                  content: const Text(
                                       // ignore: lines_longer_than_80_chars
                                       "To register new events contact imperialoctopus@gmail.com with details of your event."),
                                   actions: [
                                     TextButton(
-                                      child: Text("Close"),
+                                      child: const Text("Close"),
                                       onPressed: () =>
                                           Navigator.of(context).pop(),
                                     ),

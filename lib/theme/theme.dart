@@ -17,7 +17,7 @@ final themeData = ThemeData(
   // closer together (more dense) than on mobile platforms.
   visualDensity: VisualDensity.adaptivePlatformDensity,
 
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
       headline1: TextStyle(fontSize: 42),
       headline2: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
       headline6: TextStyle(color: Colors.black54)),
@@ -25,15 +25,15 @@ final themeData = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       //primary: Color.fromARGB(255, 181, 51, 70),
-      textStyle: TextStyle(fontSize: 32),
-      minimumSize: Size(200, 65),
+      textStyle: const TextStyle(fontSize: 32),
+      minimumSize: const Size(200, 65),
     ),
   ),
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       primary: Colors.black87,
-      textStyle: TextStyle(fontSize: 32),
-      minimumSize: Size(200, 65),
+      textStyle: const TextStyle(fontSize: 32),
+      minimumSize: const Size(200, 65),
     ),
   ),
 );

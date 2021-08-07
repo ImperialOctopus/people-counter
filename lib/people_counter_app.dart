@@ -13,6 +13,8 @@ import 'theme/theme.dart';
 
 /// Full app widget.
 class PeopleCounterApp extends StatefulWidget {
+  const PeopleCounterApp({Key? key}) : super(key: key);
+
   @override
   _PeopleCounterAppState createState() => _PeopleCounterAppState();
 }
@@ -36,17 +38,17 @@ class _PeopleCounterAppState extends State<PeopleCounterApp> {
         builder: (context, snapshot) {
           // Check for errors
           if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text(
                   // ignore: lines_longer_than_80_chars
                   'We had a problem connecting to the internet.\nPlease try restarting this app.'),
             );
           }
           if (snapshot.connectionState == ConnectionState.done) {
-            return AppView();
+            return const AppView();
           }
 
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },
@@ -58,7 +60,7 @@ class _PeopleCounterAppState extends State<PeopleCounterApp> {
 /// Stateful app view.
 class AppView extends StatefulWidget {
   /// Stateful app view.
-  const AppView();
+  const AppView({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _AppViewState();
@@ -89,7 +91,7 @@ class _AppViewState extends State<AppView> {
             BlocProvider<RoomBloc>.value(value: _roomBloc),
           ],
           child: Navigator(
-            pages: [
+            pages: const [
               MaterialPage(
                 child: RoomNavigator(
                   roomSelect: config.presetRoom

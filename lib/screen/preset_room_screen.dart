@@ -9,13 +9,15 @@ class PresetRoomScreen extends StatelessWidget {
   final String title;
   final String roomName;
 
-  const PresetRoomScreen({required this.title, required this.roomName});
+  const PresetRoomScreen(
+      {required this.title, required this.roomName, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 48),
+        padding: const EdgeInsets.symmetric(vertical: 48),
         child: Center(
           child: BlocBuilder<RoomBloc, RoomState>(
             builder: (context, state) => Column(
@@ -28,9 +30,9 @@ class PresetRoomScreen extends StatelessWidget {
                 ),
                 Container(height: 20),
                 (state is LoadingRoom || state is InRoom)
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator()
                     : ElevatedButton(
-                        child: Text('Join Event'),
+                        child: const Text('Join Event'),
                         onPressed: () {
                           BlocProvider.of<RoomBloc>(context)
                               .add(EnterRoomEvent(roomName));

@@ -77,6 +77,7 @@ class FirebaseRoomConnection implements RoomConnection {
         transaction.update(_valuesRef, {'values': _values});
       });
 
+  @override
   Future<List<LogEntry>> get stats async {
     return (await _collectionReference.doc('stats').collection('logs').get())
         .docs
@@ -86,7 +87,9 @@ class FirebaseRoomConnection implements RoomConnection {
 
   Future<void> addStat(LogEntry logEntry) async {}
 
+  @override
   Future<void> resetStats() async {}
 
+  @override
   Future<void> resetAll() async {}
 }
