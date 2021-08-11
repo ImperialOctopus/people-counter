@@ -8,4 +8,7 @@ class StatsSnapshot extends Equatable {
 
   @override
   List<Object?> get props => logs;
+
+  /// Total number of people entered into any location
+  int get totalEntries => 5;
 }

@@ -1,86 +1,115 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:people_counter/model/entries_table_source.dart';
+import 'package:people_counter/model/room_info.dart';
 
 import '../../bloc/stats/stats_bloc.dart';
 import '../../bloc/stats/stats_state.dart';
 
-class StatsScreen extends StatelessWidget {
-  final String title;
+class StatsScreen extends StatefulWidget {
+  static const double _tablePadding = 48;
 
-  const StatsScreen({required this.title, Key? key}) : super(key: key);
+  final RoomInfo roomInfo;
+
+  const StatsScreen({required this.roomInfo, Key? key}) : super(key: key);
+
+  @override
+  State<StatsScreen> createState() => _StatsScreenState();
+}
+
+class _StatsScreenState extends State<StatsScreen> {
+  late final DataTableSource _entriesTableSource;
+
+  @override
+  void initState() {
+    _entriesTableSource = EntriesTableSource(
+        statsBloc: BlocProvider.of<StatsBloc>(context),
+        roomInfo: widget.roomInfo);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          /*
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete_forever),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text("Reset Stats"),
-                content: const Text(
-                    // ignore: lines_longer_than_80_chars
-                    "This will reset all stats for this event.\nAre you sure?"),
-                actions: [
-                  TextButton(
-                    child: const Text("Cancel"),
-                    onPressed: () => Navigator.of(context).pop(false),
-                  ),
-                  TextButton(
-                    child: const Text("Reset Stats"),
-                    onPressed: () => Navigator.of(context).pop(true),
-                  ),
-                ],
+      appBar: AppBar(),
+      body: BlocBuilder<StatsBloc, StatsState>(builder: (context, statsState) {
+        if (statsState is! StatsLoaded) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 24),
+              Text(
+                widget.roomInfo.title,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline4,
               ),
-            ).then((value) {
-              if (value == true) {
-                BlocProvider.of<StatsBloc>(context)
-                    .add(const ResetStatsEvent());
-              }
-            }),
-          ),
-        ],
-          */
-          ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 48),
-        child: BlocBuilder<StatsBloc, StatsState>(builder: (context, state) {
-          if (state is StatsLoaded) {
-            return Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Padding(padding: EdgeInsets.symmetric(vertical: 12)),
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.w500),
-                ),
-                Expanded(
-                    child: ListView(
-                  children: state.snapshot.logs
-                      .map<ListTile>(
-                        (log) => ListTile(
-                          title: Text(
-                            log.location.toString() +
-                                ': ' +
-                                log.time.toString(),
+              const SizedBox(height: 16),
+              // Summary stats
+              Text(
+                'Summary Statistics',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline2,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: StatsScreen._tablePadding),
+                child: Center(
+                  child: SizedBox(
+                    width: 500,
+                    child: Card(
+                      child: DataTable(
+                        columns: const [
+                          DataColumn(label: Text('Stat')),
+                          DataColumn(label: Text('Value')),
+                        ],
+                        rows: [
+                          DataRow(
+                            cells: <DataCell>[
+                              const DataCell(Text('Total Entries')),
+                              DataCell(Text(
+                                  statsState.snapshot.totalEntries.toString())),
+                            ],
                           ),
-                        ),
-                      )
-                      .toList(),
-                )),
-              ],
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        }),
-      ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const Divider(),
+              const SizedBox(height: 48),
+              // Entries table
+              Text(
+                'Entries Table',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline2,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: StatsScreen._tablePadding),
+                child: Center(
+                  child: SizedBox(
+                    width: 500,
+                    child: PaginatedDataTable(
+                      source: _entriesTableSource,
+                      columns: const [
+                        DataColumn(label: Text('Time')),
+                        DataColumn(label: Text('Location')),
+                        DataColumn(label: Text('Type')),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

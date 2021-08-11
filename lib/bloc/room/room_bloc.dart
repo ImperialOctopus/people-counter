@@ -26,10 +26,9 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
     yield RoomStateLoading();
     try {
       final roomService = await databaseService.getRoomByName(event.roomName);
-      final title = await roomService.title;
-      final locations = await roomService.locations;
+      final roomInfo = await roomService.roomInfo;
 
-      yield RoomStateIn(roomService, title, locations);
+      yield RoomStateIn(roomService, roomInfo);
       // Error changes by platform
     } catch (e) {
       yield const RoomStateError();

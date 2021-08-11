@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'log_entry_type.dart';
 
-class LogEntry extends Equatable {
+class LogEntry extends Equatable implements Comparable {
   final LogEntryType type;
   final DateTime time;
   final int location;
@@ -21,13 +21,9 @@ class LogEntry extends Equatable {
       : type = LogEntryType.exit,
         time = DateTime.now();
 
-  LogEntry.clear({required this.location})
-      : type = LogEntryType.clear,
-        time = DateTime.now();
-
   static LogEntry fromFirebaseData(Map<String, dynamic> data) {
     return LogEntry(
-      type: LogEntryType.values[data['type'] ?? 0],
+      type: LogEntryType.fromIndex(data['type'] ?? 0),
       time: DateTime.fromMillisecondsSinceEpoch(data['time'] ?? 0),
       location: data['location'] ?? 0,
     );
@@ -38,6 +34,14 @@ class LogEntry extends Equatable {
         'time': time.millisecondsSinceEpoch,
         'location': location,
       };
+
+  @override
+  int compareTo(other) {
+    if (other is LogEntry) {
+      return time.compareTo(other.time);
+    }
+    return 0;
+  }
 
   @override
   List<Object?> get props => [type, time, location];

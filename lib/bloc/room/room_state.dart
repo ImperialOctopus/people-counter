@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:people_counter/model/room_info.dart';
 
 import '../../service/room/room_connection.dart';
 
@@ -20,13 +21,12 @@ class RoomStateLoading extends RoomState {
 
 class RoomStateIn extends RoomState {
   final RoomConnection roomConnection;
-  final String title;
-  final List<String> locations;
+  final RoomInfo roomInfo;
 
-  const RoomStateIn(this.roomConnection, this.title, this.locations);
+  const RoomStateIn(this.roomConnection, this.roomInfo);
 
   @override
-  List<Object> get props => [roomConnection, title, locations];
+  List<Object> get props => [roomConnection];
 }
 
 class RoomStateError extends RoomState {

@@ -39,10 +39,6 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       yield* _mapModifyToState(event);
       return;
     }
-    if (event is CounterEventReset) {
-      yield* _mapResetToState(event);
-      return;
-    }
     if (event is CounterEventEndDebounce) {
       yield* _mapDebounceEndedToState(event);
       return;
@@ -87,10 +83,6 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
         _roomConnection.decrementLocation(event.index);
       }
     }
-  }
-
-  Stream<CounterState> _mapResetToState(CounterEventReset event) async* {
-    _roomConnection.resetLocation(event.index);
   }
 
   Stream<CounterState> _mapDebounceEndedToState(

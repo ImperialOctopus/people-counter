@@ -43,15 +43,6 @@ class CounterEventDecrement extends CounterEventChange {
   int get change => -1;
 }
 
-class CounterEventReset extends CounterEvent {
-  final int index;
-
-  const CounterEventReset(this.index);
-
-  @override
-  List<Object> get props => [index];
-}
-
 class CounterEventEndDebounce extends CounterEvent {
   final List<int> value;
 

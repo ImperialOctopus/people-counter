@@ -23,7 +23,7 @@ class CounterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
+          /*actions: [
           IconButton(
             icon: const Icon(Icons.delete_forever),
             onPressed: () => showDialog(
@@ -52,7 +52,8 @@ class CounterScreen extends StatelessWidget {
             }),
           ),
         ],
-      ),
+        */
+          ),
       body: SizedBox.expand(
         child: Column(
           mainAxisSize: MainAxisSize.max,

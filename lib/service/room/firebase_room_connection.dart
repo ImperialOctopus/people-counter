@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:people_counter/model/room_info.dart';
 
 import '../../model/log_entry.dart';
 import '../../model/stats_snapshot.dart';
@@ -48,6 +49,11 @@ class FirebaseRoomConnection implements RoomConnection {
   }
 
   @override
+  Future<RoomInfo> get roomInfo async {
+    return RoomInfo(title: await title, locations: await locations);
+  }
+
+  @override
   Stream<List<int>> get valuesStream {
     _valuesStream ??= _collectionReference
         .doc('locations')
@@ -75,22 +81,6 @@ class FirebaseRoomConnection implements RoomConnection {
       transform: (i) => i - 1,
     )) {
       await _addStat(LogEntry.exit(location: index));
-    }
-  }
-
-  @override
-  Future<void> resetLocation(int index) async {
-    if (await _updateLocation(index,
-        validator: (i) => true, transform: (i) => 0)) {
-      await _addStat(LogEntry.clear(location: index));
-    }
-  }
-
-  @override
-  Future<void> resetAllLocations() async {
-    final _length = (await locations).length;
-    for (var i = 0; i < _length; i++) {
-      await resetLocation(i);
     }
   }
 
@@ -128,7 +118,8 @@ class FirebaseRoomConnection implements RoomConnection {
           .get()
           .then((value) => value.docs
               .map((snapshot) => LogEntry.fromFirebaseData(snapshot.data()))
-              .toList()),
+              .toList()
+            ..sort()),
     );
   }
 
