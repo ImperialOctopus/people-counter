@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/room/room_bloc.dart';
-import '../bloc/room/room_event.dart';
-import '../bloc/room/room_state.dart';
+import '../../bloc/room/room_bloc.dart';
+import '../../bloc/room/room_event.dart';
+import '../../bloc/room/room_state.dart';
 import 'counter_screen.dart';
 import 'stats_screen.dart';
 
-class CounterLocationSelect extends StatelessWidget {
-  final InRoom roomState;
+class LocationSelect extends StatelessWidget {
+  final RoomStateIn roomState;
 
-  const CounterLocationSelect({required this.roomState, Key? key})
-      : super(key: key);
+  const LocationSelect({required this.roomState, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +21,7 @@ class CounterLocationSelect extends StatelessWidget {
           onPressed: () =>
               BlocProvider.of<RoomBloc>(context).add(const LeaveRoomEvent()),
         ),
+        //title: Text(roomState.title),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 48),
@@ -29,35 +29,22 @@ class CounterLocationSelect extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            /*
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Center(
-                child: Image(
-                  width: 600,
-                  fit: BoxFit.contain,
-                  image: AssetImage('assets/tring_together_logo.png'),
-                ),
-              ),
-            ),
-            Text(
-              '''Tring Together\nNetworked People Counter''',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-            ),
-            */
-            Text(
-              roomState.name,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-            ),
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ...roomState.placeNames.asMap().entries.map((mapEntry) =>
+                  Text(
+                    roomState.title,
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                  Text(
+                    'Location Menu',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  const SizedBox(height: 24),
+                  ...roomState.locations.asMap().entries.map((mapEntry) =>
                       _locationButton(context, mapEntry.value, mapEntry.key)),
                   _statsButton(context)
                 ],
@@ -69,17 +56,18 @@ class CounterLocationSelect extends StatelessWidget {
     );
   }
 
-  Widget _locationButton(BuildContext context, String label, int index) {
+  Widget _locationButton(BuildContext context, String title, int index) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: ElevatedButton(
         child: Text(
-          label,
+          title,
           style: const TextStyle(fontSize: 18),
         ),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => CounterScreen(title: label, index: index),
+            builder: (context) => CounterScreen(
+                roomTitle: roomState.title, title: title, index: index),
           ),
         ),
       ),
@@ -90,16 +78,15 @@ class CounterLocationSelect extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: OutlinedButton(
-        child: const Text(
-          'Stats',
-          style: TextStyle(fontSize: 18),
-        ),
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => StatsScreen(title: roomState.name),
+          child: const Text(
+            'Stats',
+            style: TextStyle(fontSize: 18),
           ),
-        ),
-      ),
+          onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => StatsScreen(title: roomState.title),
+                ),
+              )),
     );
   }
 }

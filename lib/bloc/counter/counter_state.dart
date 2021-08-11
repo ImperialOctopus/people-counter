@@ -4,28 +4,28 @@ abstract class CounterState extends Equatable {
   const CounterState();
 }
 
-class LoadingCounterState extends CounterState {
-  const LoadingCounterState();
+class CounterStateLoading extends CounterState {
+  const CounterStateLoading();
 
   @override
   List<Object> get props => [];
 }
 
-class LiveCounterState extends CounterState {
+class CounterStateLive extends CounterState {
   final List<int> value;
   List<int> get live => value;
 
-  const LiveCounterState(this.value);
+  const CounterStateLive(this.value);
 
   @override
   List<Object> get props => [value];
 }
 
-class DebouncedCounterState extends LiveCounterState {
+class CounterStateDebounce extends CounterStateLive {
   @override
   final List<int> live;
 
-  const DebouncedCounterState(List<int> value, this.live) : super(value);
+  const CounterStateDebounce(List<int> value, this.live) : super(value);
 
   @override
   List<Object> get props => [value, live];

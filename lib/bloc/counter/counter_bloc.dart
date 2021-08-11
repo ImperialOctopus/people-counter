@@ -16,9 +16,9 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   /// Cubit to hold main count.
   CounterBloc({required RoomConnection roomConnection})
       : _roomConnection = roomConnection,
-        super(const LoadingCounterState()) {
+        super(const CounterStateLoading()) {
     _streamSubscription = _roomConnection.valuesStream.listen((value) {
-      add(ReceivedChangeCounterEvent(value));
+      add(CounterEventReceivedChange(value));
     });
   }
 
@@ -31,35 +31,40 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
 
   @override
   Stream<CounterState> mapEventToState(CounterEvent event) async* {
-    if (event is ReceivedChangeCounterEvent) {
+    if (event is CounterEventReceivedChange) {
       yield* _mapReceivedChangeToState(event);
+      return;
     }
-    if (event is ModifyCounterEvent) {
+    if (event is CounterEventChange) {
       yield* _mapModifyToState(event);
+      return;
     }
-    if (event is ResetCounterEvent) {
+    if (event is CounterEventReset) {
       yield* _mapResetToState(event);
+      return;
     }
-    if (event is DebounceEndedEvent) {
+    if (event is CounterEventEndDebounce) {
       yield* _mapDebounceEndedToState(event);
+      return;
     }
+    throw FallThroughError();
   }
 
   Stream<CounterState> _mapReceivedChangeToState(
-      ReceivedChangeCounterEvent event) async* {
-    if (state is DebouncedCounterState) {
-      yield DebouncedCounterState(
-          (state as DebouncedCounterState).value, event.value);
+      CounterEventReceivedChange event) async* {
+    if (state is CounterStateDebounce) {
+      yield CounterStateDebounce(
+          (state as CounterStateDebounce).value, event.value);
     } else {
-      yield LiveCounterState(event.value);
+      yield CounterStateLive(event.value);
     }
   }
 
-  Stream<CounterState> _mapModifyToState(ModifyCounterEvent event) async* {
-    if (state is! LiveCounterState) {
+  Stream<CounterState> _mapModifyToState(CounterEventChange event) async* {
+    if (state is! CounterStateLive) {
       return;
     } else {
-      final currentState = (state as LiveCounterState).live;
+      final currentState = (state as CounterStateLive).live;
       final newState = currentState
           .asMap()
           .map((key, value) {
@@ -74,7 +79,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
           })
           .values
           .toList();
-      yield DebouncedCounterState(newState, newState);
+      yield CounterStateDebounce(newState, newState);
       _resetDebounceTimer();
       if (event.change == 1) {
         _roomConnection.incrementLocation(event.index);
@@ -84,13 +89,13 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     }
   }
 
-  Stream<CounterState> _mapResetToState(ResetCounterEvent event) async* {
+  Stream<CounterState> _mapResetToState(CounterEventReset event) async* {
     _roomConnection.resetLocation(event.index);
   }
 
   Stream<CounterState> _mapDebounceEndedToState(
-      DebounceEndedEvent event) async* {
-    yield LiveCounterState(event.value);
+      CounterEventEndDebounce event) async* {
+    yield CounterStateLive(event.value);
   }
 
   void _resetDebounceTimer() {
@@ -99,8 +104,8 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   }
 
   void _debounceDelayEnded() {
-    if (state is LiveCounterState) {
-      add(DebounceEndedEvent((state as LiveCounterState).live));
+    if (state is CounterStateLive) {
+      add(CounterEventEndDebounce((state as CounterStateLive).live));
     }
   }
 }

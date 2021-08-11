@@ -1,4 +1,4 @@
-import '../../model/log_entry.dart';
+import 'package:people_counter/model/stats_snapshot.dart';
 
 /// Interface for database service.
 abstract class RoomConnection {
@@ -6,6 +6,7 @@ abstract class RoomConnection {
   Future<void> incrementLocation(int index);
   Future<void> decrementLocation(int index);
   Future<void> resetLocation(int index);
+  Future<void> resetAllLocations();
 
   // Gets stored values from the database.
   Future<String> get title;
@@ -14,8 +15,5 @@ abstract class RoomConnection {
   Stream<List<int>> get valuesStream;
 
   // Stats
-  Future<List<LogEntry>> get stats;
-  Future<void> resetStats();
-
-  Future<void> resetAll();
+  Future<StatsSnapshot> get stats;
 }

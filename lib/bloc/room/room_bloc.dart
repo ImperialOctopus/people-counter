@@ -7,29 +7,32 @@ import 'room_state.dart';
 class RoomBloc extends Bloc<RoomEvent, RoomState> {
   final DatabaseService databaseService;
 
-  RoomBloc(this.databaseService) : super(const OutRoom());
+  RoomBloc(this.databaseService) : super(const RoomStateNone());
 
   @override
   Stream<RoomState> mapEventToState(RoomEvent event) async* {
     if (event is LeaveRoomEvent) {
-      yield const OutRoom();
+      yield const RoomStateNone();
+      return;
     }
     if (event is EnterRoomEvent) {
       yield* _mapEnterRoomToState(event);
+      return;
     }
+    throw FallThroughError();
   }
 
   Stream<RoomState> _mapEnterRoomToState(EnterRoomEvent event) async* {
-    yield LoadingRoom();
+    yield RoomStateLoading();
     try {
       final roomService = await databaseService.getRoomByName(event.roomName);
       final title = await roomService.title;
-      final placeNames = await roomService.locations;
+      final locations = await roomService.locations;
 
-      yield InRoom(roomService, title, placeNames);
+      yield RoomStateIn(roomService, title, locations);
       // Error changes by platform
     } catch (e) {
-      yield const RoomLoadError();
+      yield const RoomStateError();
     }
   }
 }

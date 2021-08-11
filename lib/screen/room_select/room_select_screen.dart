@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/room/room_bloc.dart';
-import '../bloc/room/room_event.dart';
-import '../bloc/room/room_state.dart';
-import '../extension/lowercase_text_formatter.dart';
+import '../../bloc/room/room_bloc.dart';
+import '../../bloc/room/room_event.dart';
+import '../../bloc/room/room_state.dart';
+import '../../extension/lowercase_text_formatter.dart';
 
 class RoomSelectScreen extends StatefulWidget {
   final String title;
@@ -66,7 +66,7 @@ class _RoomSelectScreenState extends State<RoomSelectScreen> {
                     ),
                   ),
                 ),
-                if (state is RoomLoadError)
+                if (state is RoomStateError)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Text(
@@ -76,7 +76,7 @@ class _RoomSelectScreenState extends State<RoomSelectScreen> {
                   ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: (state is LoadingRoom || state is InRoom)
+                  child: (state is RoomStateLoading || state is RoomStateIn)
                       ? const CircularProgressIndicator()
                       : Column(
                           children: [

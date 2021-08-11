@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/room/room_bloc.dart';
-import '../bloc/room/room_state.dart';
-import 'counter_navigator.dart';
+import '../../bloc/room/room_bloc.dart';
+import '../../bloc/room/room_state.dart';
+import '../location_select/location_navigator.dart';
 
 class RoomNavigator extends StatelessWidget {
   final Widget roomSelect;
@@ -30,14 +30,14 @@ class RoomNavigator extends StatelessWidget {
   }
 
   void _onRoomBlocChanged(BuildContext context, RoomState state) {
-    if (state is InRoom) {
+    if (state is RoomStateIn) {
       navigatorKey.currentState?.push(
         MaterialPageRoute(
-          builder: (context) => CounterNavigator(state: state),
+          builder: (context) => LocationNavigator(state: state),
         ),
       );
     }
-    if (state is OutRoom) {
+    if (state is RoomStateNone) {
       navigatorKey.currentState?.pop();
     }
   }

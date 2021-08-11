@@ -1,12 +1,16 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:people_counter/model/log_entry.dart';
 
+import '../../model/log_entry.dart';
+import '../../model/stats_snapshot.dart';
 import 'room_connection.dart';
 
 /// Database implementation using Firebase
 class FirebaseRoomConnection implements RoomConnection {
+  static const String _defaultTitle = 'Unknown Event';
+  static const List<String> _defaultLocations = [];
+
   final String roomName;
 
   late final CollectionReference<Map<String, dynamic>> _collectionReference;
@@ -27,15 +31,19 @@ class FirebaseRoomConnection implements RoomConnection {
   /// Static information
   @override
   Future<List<String>> get locations async {
-    _locations ??= (await _collectionReference.doc('locations').get())
-        .get('names')
-        .toList();
+    _locations ??= _collectionReference.doc('locations').get().then((value) =>
+        (value.data()?['names'] as List<dynamic>?)?.cast<String>() ??
+        _defaultLocations);
     return _locations!;
   }
 
   @override
   Future<String> get title async {
-    _title ??= (await _collectionReference.doc('meta').get()).get('title');
+    _title ??= _collectionReference
+        .doc('meta')
+        .get()
+        .then((value) => value.data()?['name'] as String? ?? _defaultTitle);
+
     return _title!;
   }
 
@@ -44,7 +52,8 @@ class FirebaseRoomConnection implements RoomConnection {
     _valuesStream ??= _collectionReference
         .doc('locations')
         .snapshots()
-        .map<List<int>>((snapshot) => snapshot.get('values'));
+        .map<List<int>>((snapshot) =>
+            (snapshot.data()?['values'] as List<dynamic>).cast<int>());
     return _valuesStream!;
   }
 
@@ -52,44 +61,81 @@ class FirebaseRoomConnection implements RoomConnection {
       valuesStream.map((list) => list.fold(0, (a, b) => a + b));
 
   @override
-  Future<void> incrementLocation(int index) =>
-      _updateLocation(index, (i) => i++);
-
-  @override
-  Future<void> decrementLocation(int index) => _updateLocation(index, (i) {
-        i--;
-        if (i < 0) return 0;
-        return i;
-      });
-
-  @override
-  Future<void> resetLocation(int index) => _updateLocation(index, (i) => 0);
-
-  Future<void> _updateLocation(int index, Function(int) transform) =>
-      FirebaseFirestore.instance.runTransaction((transaction) async {
-        // Increment value
-        final _valuesRef = _collectionReference.doc('locations');
-        final _values =
-            (await transaction.get(_valuesRef)).get('values') as List<int>;
-
-        _values[index] = transform(_values[index]);
-
-        transaction.update(_valuesRef, {'values': _values});
-      });
-
-  @override
-  Future<List<LogEntry>> get stats async {
-    return (await _collectionReference.doc('stats').collection('logs').get())
-        .docs
-        .map((snapshot) => LogEntry())
-        .toList();
+  Future<void> incrementLocation(int index) async {
+    await _updateLocation(index,
+        validator: (i) => true, transform: (i) => i + 1);
+    await _addStat(LogEntry.entry(location: index));
   }
 
-  Future<void> addStat(LogEntry logEntry) async {}
+  @override
+  Future<void> decrementLocation(int index) async {
+    if (await _updateLocation(
+      index,
+      validator: (i) => i > 0,
+      transform: (i) => i - 1,
+    )) {
+      await _addStat(LogEntry.exit(location: index));
+    }
+  }
 
   @override
-  Future<void> resetStats() async {}
+  Future<void> resetLocation(int index) async {
+    if (await _updateLocation(index,
+        validator: (i) => true, transform: (i) => 0)) {
+      await _addStat(LogEntry.clear(location: index));
+    }
+  }
 
   @override
-  Future<void> resetAll() async {}
+  Future<void> resetAllLocations() async {
+    final _length = (await locations).length;
+    for (var i = 0; i < _length; i++) {
+      await resetLocation(i);
+    }
+  }
+
+  Future<bool> _updateLocation(int index,
+      {required bool Function(int) validator,
+      required int Function(int) transform}) async {
+    return await FirebaseFirestore.instance
+        .runTransaction<bool>((transaction) async {
+      // Increment value
+      final List<int> _values = await transaction
+          .get(_collectionReference.doc('locations'))
+          .then((value) =>
+              (value.data()?['values'] as List<dynamic>).cast<int>());
+
+      var _value = _values[index];
+
+      if (!validator(_value)) {
+        return false;
+      }
+      _value = transform(_value);
+      _values[index] = _value;
+
+      transaction
+          .update(_collectionReference.doc('locations'), {'values': _values});
+      return true;
+    });
+  }
+
+  @override
+  Future<StatsSnapshot> get stats async {
+    return StatsSnapshot(
+      logs: await _collectionReference
+          .doc('stats')
+          .collection('logs')
+          .get()
+          .then((value) => value.docs
+              .map((snapshot) => LogEntry.fromFirebaseData(snapshot.data()))
+              .toList()),
+    );
+  }
+
+  Future<void> _addStat(LogEntry logEntry) async {
+    _collectionReference
+        .doc('stats')
+        .collection('logs')
+        .add(logEntry.toFirebaseData);
+  }
 }

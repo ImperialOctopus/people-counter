@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/room/room_bloc.dart';
 import 'config.dart' as config;
-import 'screen/preset_room_screen.dart';
-import 'screen/room_navigator.dart';
-import 'screen/room_select_screen.dart';
+import 'screen/room_select/preset_room_screen.dart';
+import 'screen/room_select/room_navigator.dart';
+import 'screen/room_select/room_select_screen.dart';
 import 'service/database/database_service.dart';
 import 'service/database/firebase_database_service.dart';
 import 'theme/theme.dart';

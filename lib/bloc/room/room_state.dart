@@ -6,33 +6,33 @@ abstract class RoomState extends Equatable {
   const RoomState();
 }
 
-class OutRoom extends RoomState {
-  const OutRoom();
+class RoomStateNone extends RoomState {
+  const RoomStateNone();
 
   @override
   List<Object> get props => [];
 }
 
-class LoadingRoom extends RoomState {
+class RoomStateLoading extends RoomState {
   @override
   List<Object> get props => [];
 }
 
-class InRoom extends RoomState {
+class RoomStateIn extends RoomState {
   final RoomConnection roomConnection;
-  final String name;
-  final List<String> placeNames;
+  final String title;
+  final List<String> locations;
 
-  const InRoom(this.roomConnection, this.name, this.placeNames);
+  const RoomStateIn(this.roomConnection, this.title, this.locations);
 
   @override
-  List<Object> get props => [roomConnection, name, placeNames];
+  List<Object> get props => [roomConnection, title, locations];
 }
 
-class RoomLoadError extends RoomState {
+class RoomStateError extends RoomState {
   final String message;
 
-  const RoomLoadError([this.message = '']);
+  const RoomStateError([this.message = '']);
 
   @override
   List<Object> get props => [message];

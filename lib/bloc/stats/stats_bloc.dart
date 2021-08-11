@@ -11,15 +11,20 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
 
   StatsBloc({required RoomConnection roomConnection})
       : _roomConnection = roomConnection,
-        super(const StatsLoading());
+        super(const StatsNotLoaded());
 
   @override
   Stream<StatsState> mapEventToState(StatsEvent event) async* {
-    if (event is StatsChangedEvent) {
-      yield StatsLoaded(event.snapshot);
+    if (event is ReloadStatsEvent) {
+      if (state is StatsHasStats) {
+        yield StatsReloading((state as StatsHasStats).snapshot);
+      } else {
+        yield const StatsLoading();
+      }
+      final _stats = await _roomConnection.stats;
+      yield StatsLoaded(_stats);
+      return;
     }
-    if (event is ResetStatsEvent) {
-      _roomConnection.resetStats();
-    }
+    throw FallThroughError();
   }
 }

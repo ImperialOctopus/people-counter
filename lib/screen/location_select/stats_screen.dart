@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/stats/stats_bloc.dart';
-import '../bloc/stats/stats_event.dart';
-import '../bloc/stats/stats_state.dart';
+import '../../bloc/stats/stats_bloc.dart';
+import '../../bloc/stats/stats_state.dart';
 
 class StatsScreen extends StatelessWidget {
   final String title;
@@ -14,6 +13,7 @@ class StatsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          /*
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_forever),
@@ -43,7 +43,8 @@ class StatsScreen extends StatelessWidget {
             }),
           ),
         ],
-      ),
+          */
+          ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 48),
         child: BlocBuilder<StatsBloc, StatsState>(builder: (context, state) {
@@ -60,19 +61,19 @@ class StatsScreen extends StatelessWidget {
                       fontSize: 24, fontWeight: FontWeight.w500),
                 ),
                 Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: const [
-                          Text('Total Entries:'),
-                        ],
+                    child: ListView(
+                  children: state.snapshot.logs
+                      .map<ListTile>(
+                        (log) => ListTile(
+                          title: Text(
+                            log.location.toString() +
+                                ': ' +
+                                log.time.toString(),
+                          ),
+                        ),
                       )
-                    ],
-                  ),
-                ),
+                      .toList(),
+                )),
               ],
             );
           } else {
