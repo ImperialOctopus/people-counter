@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:people_counter/model/entries_table_source.dart';
-import 'package:people_counter/model/room_info.dart';
 
 import '../../bloc/stats/stats_bloc.dart';
 import '../../bloc/stats/stats_state.dart';
+import '../../model/entries_table_source.dart';
+import '../../model/room_info.dart';
 
 class StatsScreen extends StatefulWidget {
   static const double _tablePadding = 48;
@@ -81,8 +81,47 @@ class _StatsScreenState extends State<StatsScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 24),
+              const Divider(),
+              const SizedBox(height: 24),
+              /*
+              // Entries chart
+              
+              Text(
+                'Hourly Entries',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline2,
+              ),
+              TimeSeriesChart(
+                [
+                  Series<EntriesChartPoint, DateTime>(
+                    id: 'Entries',
+                    colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
+                    domainFn: (EntriesChartPoint entries, _) => entries.time,
+                    measureFn: (EntriesChartPoint entries, _) =>
+                        entries.frequency,
+                    data: [
+                      EntriesChartPoint(
+                          time: DateTime(2017, 9, 19), frequency: 5),
+                      EntriesChartPoint(
+                          time: DateTime(2017, 9, 26), frequency: 25),
+                      EntriesChartPoint(
+                          time: DateTime(2017, 10, 3), frequency: 100),
+                      EntriesChartPoint(
+                          time: DateTime(2017, 10, 10), frequency: 75),
+                    ],
+                  ),
+                ],
+                animate: true,
+                // Optionally pass in a [DateTimeFactory] used by the chart. The factory
+                // should create the same type of [DateTime] as the data provided. If none
+                // specified, the default creates local date time.
+                dateTimeFactory: const LocalDateTimeFactory(),
+              ),
+              
               const Divider(),
               const SizedBox(height: 48),
+              */
               // Entries table
               Text(
                 'Entries Table',

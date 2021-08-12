@@ -27,6 +27,10 @@ dependencies:
   equatable: ^2.0.3
   firebase_core: ^1.4.0
   cloud_firestore: ^2.4.0
+  charts_flutter:
+    git:
+      url: git://github.com/google/charts.git
+      path: charts_flutter
 
 dev_dependencies:
   lint: ^1.5.3
@@ -46,7 +50,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/carnival_logo.webp
+    - carnival_logo.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

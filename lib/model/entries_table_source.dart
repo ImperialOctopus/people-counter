@@ -25,7 +25,7 @@ class EntriesTableSource extends DataTableSource {
 
   @override
   DataRow? getRow(int index) {
-    final _data = snapshot?.logs[index];
+    final _data = snapshot?.logs.reversed.elementAt(index);
 
     if (_data == null) {
       return null;
@@ -34,13 +34,13 @@ class EntriesTableSource extends DataTableSource {
         cells: [
           DataCell(
             Text(
-              _data.time.day.toString() +
+              _data.time.day.toString().padLeft(2, '0') +
                   '/' +
-                  _data.time.month.toString() +
+                  _data.time.month.toString().padLeft(2, '0') +
                   '   ' +
-                  _data.time.hour.toString() +
+                  _data.time.hour.toString().padLeft(2, '0') +
                   ':' +
-                  _data.time.minute.toString(),
+                  _data.time.minute.toString().padLeft(2, '0'),
             ),
           ),
           DataCell(Text(roomInfo.locations[_data.location])),
