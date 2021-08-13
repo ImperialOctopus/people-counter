@@ -13,4 +13,18 @@ class StatsSnapshot extends Equatable {
   /// Total number of people entered into any location
   int get totalEntries =>
       logs.where((element) => element.type == LogEntryType.entry).length;
+
+  int totalBefore(DateTime time) {
+    return logs.where((log) => log.time.isBefore(time)).fold<int>(0,
+        (previousValue, log) {
+      switch (log.type) {
+        case LogEntryType.entry:
+          return previousValue + 1;
+        case LogEntryType.exit:
+          return previousValue - 1;
+        default:
+          throw FallThroughError();
+      }
+    });
+  }
 }

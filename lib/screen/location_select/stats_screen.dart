@@ -1,5 +1,8 @@
+import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:people_counter/model/entries_chart_point.dart';
+import 'package:people_counter/model/stats_snapshot.dart';
 
 import '../../bloc/stats/stats_bloc.dart';
 import '../../bloc/stats/stats_state.dart';
@@ -28,6 +31,23 @@ class _StatsScreenState extends State<StatsScreen> {
     super.initState();
   }
 
+  List<DateTime> get _chartRange {
+    final _now = DateTime.now();
+    return [
+      DateTime(_now.year, _now.month, _now.day, 11),
+      DateTime(_now.year, _now.month, _now.day, 11, 30),
+      DateTime(_now.year, _now.month, _now.day, 12),
+      DateTime(_now.year, _now.month, _now.day, 12, 30),
+      DateTime(_now.year, _now.month, _now.day, 13),
+      DateTime(_now.year, _now.month, _now.day, 13, 30),
+      DateTime(_now.year, _now.month, _now.day, 14),
+      DateTime(_now.year, _now.month, _now.day, 14, 30),
+      DateTime(_now.year, _now.month, _now.day, 15),
+      DateTime(_now.year, _now.month, _now.day, 15, 30),
+      DateTime(_now.year, _now.month, _now.day, 16),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +56,7 @@ class _StatsScreenState extends State<StatsScreen> {
         if (statsState is! StatsLoaded) {
           return const Center(child: CircularProgressIndicator());
         }
+        final _snapshot = statsState.snapshot;
 
         return SingleChildScrollView(
           child: Column(
@@ -55,6 +76,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline2,
               ),
+              const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: StatsScreen._tablePadding),
@@ -71,8 +93,7 @@ class _StatsScreenState extends State<StatsScreen> {
                           DataRow(
                             cells: <DataCell>[
                               const DataCell(Text('Total Entries')),
-                              DataCell(Text(
-                                  statsState.snapshot.totalEntries.toString())),
+                              DataCell(Text(_snapshot.totalEntries.toString())),
                             ],
                           ),
                         ],
@@ -84,50 +105,58 @@ class _StatsScreenState extends State<StatsScreen> {
               const SizedBox(height: 24),
               const Divider(),
               const SizedBox(height: 24),
-              /*
+
               // Entries chart
-              
               Text(
-                'Hourly Entries',
+                'Hourly Figures',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline2,
               ),
-              TimeSeriesChart(
-                [
-                  Series<EntriesChartPoint, DateTime>(
-                    id: 'Entries',
-                    colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
-                    domainFn: (EntriesChartPoint entries, _) => entries.time,
-                    measureFn: (EntriesChartPoint entries, _) =>
-                        entries.frequency,
-                    data: [
-                      EntriesChartPoint(
-                          time: DateTime(2017, 9, 19), frequency: 5),
-                      EntriesChartPoint(
-                          time: DateTime(2017, 9, 26), frequency: 25),
-                      EntriesChartPoint(
-                          time: DateTime(2017, 10, 3), frequency: 100),
-                      EntriesChartPoint(
-                          time: DateTime(2017, 10, 10), frequency: 75),
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 48),
+                child: SizedBox(
+                  height: 400,
+                  child: TimeSeriesChart(
+                    [
+                      Series<EntriesChartPoint, DateTime>(
+                        id: 'Entries',
+                        colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
+                        domainFn: (EntriesChartPoint entries, _) =>
+                            entries.time,
+                        measureFn: (EntriesChartPoint entries, _) =>
+                            entries.frequency,
+                        data: _chartRange
+                            .map(
+                              (time) => EntriesChartPoint(
+                                  time: time,
+                                  frequency: (time.isBefore(DateTime.now()))
+                                      ? _snapshot.totalBefore(time)
+                                      : null),
+                            )
+                            .toList(),
+                      ),
                     ],
+                    animate: true,
+                    // Optionally pass in a [DateTimeFactory] used by the chart. The factory
+                    // should create the same type of [DateTime] as the data provided. If none
+                    // specified, the default creates local date time.
+                    dateTimeFactory: const LocalDateTimeFactory(),
                   ),
-                ],
-                animate: true,
-                // Optionally pass in a [DateTimeFactory] used by the chart. The factory
-                // should create the same type of [DateTime] as the data provided. If none
-                // specified, the default creates local date time.
-                dateTimeFactory: const LocalDateTimeFactory(),
+                ),
               ),
-              
+
+              const SizedBox(height: 24),
               const Divider(),
-              const SizedBox(height: 48),
-              */
+              const SizedBox(height: 24),
+
               // Entries table
               Text(
                 'Entries Table',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline2,
               ),
+              const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: StatsScreen._tablePadding),
