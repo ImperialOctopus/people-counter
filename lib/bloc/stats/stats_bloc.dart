@@ -17,12 +17,13 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
   Stream<StatsState> mapEventToState(StatsEvent event) async* {
     if (event is ReloadStatsEvent) {
       if (state is StatsHasStats) {
-        yield StatsReloading((state as StatsHasStats).snapshot);
+        yield StatsReloading((state as StatsHasStats).snapshot,
+            (state as StatsHasStats).generatedAt);
       } else {
         yield const StatsLoading();
       }
       final _stats = await _roomConnection.stats;
-      yield StatsLoaded(_stats);
+      yield StatsLoaded(_stats, DateTime.now());
       return;
     }
     throw FallThroughError();

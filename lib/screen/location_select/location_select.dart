@@ -4,8 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/room/room_bloc.dart';
 import '../../bloc/room/room_event.dart';
 import '../../bloc/room/room_state.dart';
-import '../../bloc/stats/stats_bloc.dart';
-import '../../bloc/stats/stats_event.dart';
 import 'counter_screen.dart';
 import 'stats_screen.dart';
 
@@ -88,7 +86,7 @@ class LocationSelect extends StatelessWidget {
             style: TextStyle(fontSize: 18),
           ),
           onPressed: () {
-            BlocProvider.of<StatsBloc>(context).add(const ReloadStatsEvent());
+            //BlocProvider.of<StatsBloc>(context).add(const ReloadStatsEvent());
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => StatsScreen(roomInfo: roomState.roomInfo),

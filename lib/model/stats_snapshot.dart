@@ -27,4 +27,10 @@ class StatsSnapshot extends Equatable {
       }
     });
   }
+
+  List<LogEntry> logsBetween({required DateTime start, required DateTime end}) {
+    return logs
+        .where((log) => log.time.isAfter(start) && log.time.isBefore(end))
+        .toList();
+  }
 }

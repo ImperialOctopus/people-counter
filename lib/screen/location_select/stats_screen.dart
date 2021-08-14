@@ -1,11 +1,11 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:people_counter/model/entries_chart_point.dart';
-import 'package:people_counter/model/stats_snapshot.dart';
 
 import '../../bloc/stats/stats_bloc.dart';
+import '../../bloc/stats/stats_event.dart';
 import '../../bloc/stats/stats_state.dart';
+import '../../model/entries_chart_point.dart';
 import '../../model/entries_table_source.dart';
 import '../../model/room_info.dart';
 
@@ -28,37 +28,108 @@ class _StatsScreenState extends State<StatsScreen> {
     _entriesTableSource = EntriesTableSource(
         statsBloc: BlocProvider.of<StatsBloc>(context),
         roomInfo: widget.roomInfo);
+
     super.initState();
   }
 
   List<DateTime> get _chartRange {
     final _now = DateTime.now();
     return [
-      DateTime(_now.year, _now.month, _now.day, 11),
+      DateTime(_now.year, _now.month, _now.day, 11, 00),
+      DateTime(_now.year, _now.month, _now.day, 11, 10),
+      DateTime(_now.year, _now.month, _now.day, 11, 20),
       DateTime(_now.year, _now.month, _now.day, 11, 30),
-      DateTime(_now.year, _now.month, _now.day, 12),
+      DateTime(_now.year, _now.month, _now.day, 11, 40),
+      DateTime(_now.year, _now.month, _now.day, 11, 50),
+      //
+      DateTime(_now.year, _now.month, _now.day, 12, 00),
+      DateTime(_now.year, _now.month, _now.day, 12, 10),
+      DateTime(_now.year, _now.month, _now.day, 12, 20),
       DateTime(_now.year, _now.month, _now.day, 12, 30),
-      DateTime(_now.year, _now.month, _now.day, 13),
+      DateTime(_now.year, _now.month, _now.day, 12, 40),
+      DateTime(_now.year, _now.month, _now.day, 12, 50),
+      //
+      DateTime(_now.year, _now.month, _now.day, 13, 00),
+      DateTime(_now.year, _now.month, _now.day, 13, 10),
+      DateTime(_now.year, _now.month, _now.day, 13, 20),
       DateTime(_now.year, _now.month, _now.day, 13, 30),
-      DateTime(_now.year, _now.month, _now.day, 14),
+      DateTime(_now.year, _now.month, _now.day, 13, 40),
+      DateTime(_now.year, _now.month, _now.day, 13, 50),
+      //
+      DateTime(_now.year, _now.month, _now.day, 14, 00),
+      DateTime(_now.year, _now.month, _now.day, 14, 10),
+      DateTime(_now.year, _now.month, _now.day, 14, 20),
       DateTime(_now.year, _now.month, _now.day, 14, 30),
-      DateTime(_now.year, _now.month, _now.day, 15),
+      DateTime(_now.year, _now.month, _now.day, 14, 40),
+      DateTime(_now.year, _now.month, _now.day, 14, 50),
+      //
+      DateTime(_now.year, _now.month, _now.day, 15, 00),
+      DateTime(_now.year, _now.month, _now.day, 15, 10),
+      DateTime(_now.year, _now.month, _now.day, 15, 20),
       DateTime(_now.year, _now.month, _now.day, 15, 30),
-      DateTime(_now.year, _now.month, _now.day, 16),
+      DateTime(_now.year, _now.month, _now.day, 15, 40),
+      DateTime(_now.year, _now.month, _now.day, 15, 50),
+      //
+      DateTime(_now.year, _now.month, _now.day, 16, 00),
     ];
+  }
+
+  bool get _isWithinRange {
+    final _now = DateTime.now();
+    return (_now.hour >= 11 && _now.hour < 16);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: BlocBuilder<StatsBloc, StatsState>(builder: (context, statsState) {
-        if (statsState is! StatsLoaded) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        final _snapshot = statsState.snapshot;
+    return BlocBuilder<StatsBloc, StatsState>(builder: (context, statsState) {
+      if (statsState is StatsNotLoaded) {
+        return Scaffold(
+          appBar: AppBar(),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'No stats report loaded',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                Text(
+                  "Requesting a stats report is expensive:\nPlease only do so if you know what you're doing!",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () => BlocProvider.of<StatsBloc>(context)
+                      .add(const ReloadStatsEvent()),
+                  child: const Text('Request Report'),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
 
-        return SingleChildScrollView(
+      if (statsState is! StatsLoaded) {
+        return Scaffold(
+          appBar: AppBar(),
+          body: const Center(child: CircularProgressIndicator()),
+        );
+      }
+
+      final _snapshot = (statsState).snapshot;
+
+      return Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () => BlocProvider.of<StatsBloc>(context)
+                    .add(const ReloadStatsEvent()),
+                icon: const Icon(Icons.refresh))
+          ],
+        ),
+        body: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -68,6 +139,11 @@ class _StatsScreenState extends State<StatsScreen> {
                 widget.roomInfo.title,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline4,
+              ),
+              Text(
+                'Generated at: ' + statsState.generatedAt.toString(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
               const SizedBox(height: 16),
               // Summary stats
@@ -126,18 +202,23 @@ class _StatsScreenState extends State<StatsScreen> {
                             entries.time,
                         measureFn: (EntriesChartPoint entries, _) =>
                             entries.frequency,
-                        data: _chartRange
-                            .map(
-                              (time) => EntriesChartPoint(
-                                  time: time,
-                                  frequency: (time.isBefore(DateTime.now()))
-                                      ? _snapshot.totalBefore(time)
-                                      : null),
-                            )
-                            .toList(),
+                        data: [
+                          ..._chartRange.map(
+                            (time) => EntriesChartPoint(
+                                time: time,
+                                frequency: (time.isBefore(DateTime.now()))
+                                    ? _snapshot.totalBefore(time)
+                                    : null),
+                          ),
+                          if (_isWithinRange)
+                            EntriesChartPoint(
+                                time: DateTime.now(),
+                                frequency:
+                                    _snapshot.totalBefore(DateTime.now()))
+                        ],
                       ),
                     ],
-                    animate: true,
+                    animate: false,
                     // Optionally pass in a [DateTimeFactory] used by the chart. The factory
                     // should create the same type of [DateTime] as the data provided. If none
                     // specified, the default creates local date time.
@@ -174,10 +255,11 @@ class _StatsScreenState extends State<StatsScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 24),
             ],
           ),
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 }

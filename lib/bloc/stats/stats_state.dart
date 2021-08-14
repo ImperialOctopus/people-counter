@@ -8,6 +8,8 @@ abstract class StatsState extends Equatable {
 
 abstract class StatsHasStats {
   StatsSnapshot get snapshot;
+
+  DateTime get generatedAt;
 }
 
 abstract class StatsIsLoading {}
@@ -30,16 +32,17 @@ class StatsLoaded extends StatsState implements StatsHasStats {
   @override
   final StatsSnapshot snapshot;
 
-  const StatsLoaded(this.snapshot);
+  @override
+  final DateTime generatedAt;
+
+  const StatsLoaded(this.snapshot, this.generatedAt);
 
   @override
-  List<Object> get props => [snapshot];
+  List<Object> get props => [snapshot, generatedAt];
 }
 
 class StatsReloading extends StatsLoaded
     implements StatsHasStats, StatsIsLoading {
-  const StatsReloading(StatsSnapshot snapshot) : super(snapshot);
-
-  @override
-  List<Object> get props => [snapshot];
+  const StatsReloading(StatsSnapshot snapshot, DateTime generatedAt)
+      : super(snapshot, generatedAt);
 }
