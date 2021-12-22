@@ -5,6 +5,8 @@ import '../../bloc/counter/counter_bloc.dart';
 import '../../bloc/counter/counter_event.dart';
 import '../../bloc/counter/counter_state.dart';
 
+import '../../config.dart' as config;
+
 /// Main app screen with counter.
 class CounterScreen extends StatelessWidget {
   final String roomTitle;
@@ -23,37 +25,38 @@ class CounterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          /*actions: [
-          IconButton(
-            icon: const Icon(Icons.delete_forever),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text("Reset Counter"),
-                content: const Text(
-                    // ignore: lines_longer_than_80_chars
-                    "This will reset the counter to zero.\nAre you sure?"),
-                actions: [
-                  TextButton(
-                    child: const Text("Cancel"),
-                    onPressed: () => Navigator.of(context).pop(false),
-                  ),
-                  TextButton(
-                    child: const Text("Reset Counter"),
-                    onPressed: () => Navigator.of(context).pop(true),
-                  ),
-                ],
-              ),
-            ).then((value) {
-              if (value == true) {
-                BlocProvider.of<CounterBloc>(context)
-                    .add(CounterEventReset(index));
-              }
-            }),
-          ),
-        ],
-        */
-          ),
+        actions: (config.allowReset)
+            ? [
+                IconButton(
+                  icon: const Icon(Icons.delete_forever),
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Reset Counter"),
+                      content: const Text(
+                          // ignore: lines_longer_than_80_chars
+                          "This will reset the counter for this location to zero.\nHas Steffi said you're allowed to do this?"),
+                      actions: [
+                        TextButton(
+                          child: const Text("Cancel"),
+                          onPressed: () => Navigator.of(context).pop(false),
+                        ),
+                        TextButton(
+                          child: const Text("Reset Counter"),
+                          onPressed: () => Navigator.of(context).pop(true),
+                        ),
+                      ],
+                    ),
+                  ).then((value) {
+                    if (value == true) {
+                      BlocProvider.of<CounterBloc>(context)
+                          .add(CounterEventReset(index));
+                    }
+                  }),
+                ),
+              ]
+            : null,
+      ),
       body: SizedBox.expand(
         child: Column(
           mainAxisSize: MainAxisSize.max,

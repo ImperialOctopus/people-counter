@@ -84,6 +84,17 @@ class FirebaseRoomConnection implements RoomConnection {
     }
   }
 
+  @override
+  Future<void> resetLocation(int index) async {
+    if (await _updateLocation(
+      index,
+      validator: (i) => i > 0,
+      transform: (i) => 0,
+    )) {
+      await _addStat(LogEntry.reset(location: index));
+    }
+  }
+
   Future<bool> _updateLocation(int index,
       {required bool Function(int) validator,
       required int Function(int) transform}) async {

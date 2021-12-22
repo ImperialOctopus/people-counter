@@ -7,6 +7,8 @@ import '../../bloc/room/room_state.dart';
 import 'counter_screen.dart';
 import 'stats_screen.dart';
 
+import '../../config.dart' as config;
+
 class LocationSelect extends StatelessWidget {
   final RoomStateIn roomState;
 
@@ -47,7 +49,7 @@ class LocationSelect extends StatelessWidget {
                   ...roomState.roomInfo.locations.asMap().entries.map(
                       (mapEntry) => _locationButton(
                           context, mapEntry.value, mapEntry.key)),
-                  _statsButton(context)
+                  if (config.allowStats) _statsButton(context),
                 ],
               ),
             ),

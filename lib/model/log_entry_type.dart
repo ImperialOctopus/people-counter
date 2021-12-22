@@ -1,3 +1,5 @@
+
+
 /// Type of an entry in the log.
 class LogEntryType {
   /// Enum index.
@@ -17,6 +19,7 @@ class LogEntryType {
   static const List<LogEntryType> _all = [
     entry,
     exit,
+    reset,
   ];
 
   /// Someone entered.
@@ -24,4 +27,7 @@ class LogEntryType {
 
   /// Someone left.
   static const LogEntryType exit = LogEntryType._(1, 'Exit');
+
+  /// Reset counter.
+  static const LogEntryType reset = LogEntryType._(2, 'Reset');
 }

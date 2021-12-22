@@ -1,6 +1,6 @@
 {
-  "name": "People Counter",
-  "short_name": "People Counter",
+  "name": "Tring Together Counter",
+  "short_name": "TT Counter",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#FFC1072",

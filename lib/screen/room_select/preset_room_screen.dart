@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/room/room_bloc.dart';
 import '../../bloc/room/room_event.dart';
 import '../../bloc/room/room_state.dart';
+import '../../config.dart' as config;
 
 class PresetRoomScreen extends StatelessWidget {
   final String title;
@@ -32,7 +33,7 @@ class PresetRoomScreen extends StatelessWidget {
                   child: Center(
                     child: Image(
                       fit: BoxFit.contain,
-                      image: AssetImage('carnival_logo.webp'),
+                      image: AssetImage(config.headerLocation),
                     ),
                   ),
                 ),

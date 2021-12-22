@@ -43,6 +43,10 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
       yield* _mapDebounceEndedToState(event);
       return;
     }
+    if (event is CounterEventReset) {
+      yield* _mapResetToState(event);
+      return;
+    }
     throw FallThroughError();
   }
 
@@ -76,7 +80,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
           .values
           .toList();
       yield CounterStateDebounce(newState, newState);
-      _resetDebounceTimer();
+      _setDebounceTimer();
       if (event.change == 1) {
         _roomConnection.incrementLocation(event.index);
       } else {
@@ -90,8 +94,28 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     yield CounterStateLive(event.value);
   }
 
-  void _resetDebounceTimer() {
+  Stream<CounterState> _mapResetToState(CounterEventReset event) async* {
+    if (state is! CounterStateLive) {
+      return;
+    } else {
+      final currentState = (state as CounterStateLive).live;
+      final newState = currentState
+          .asMap()
+          .map((key, value) => MapEntry(key, key == event.index ? 0 : value))
+          .values
+          .toList();
+      yield CounterStateDebounce(newState, newState);
+      _setDebounceTimer();
+      _roomConnection.resetLocation(event.index);
+    }
+  }
+
+  void _cancelDebounceTimer() {
     _timer?.cancel();
+  }
+
+  void _setDebounceTimer() {
+    _cancelDebounceTimer();
     _timer = Timer(const Duration(milliseconds: 200), _debounceDelayEnded);
   }
 

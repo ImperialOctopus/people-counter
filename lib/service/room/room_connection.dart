@@ -6,6 +6,7 @@ abstract class RoomConnection {
   // Modify stored value. May use transactions for safety.
   Future<void> incrementLocation(int index);
   Future<void> decrementLocation(int index);
+  Future<void> resetLocation(int index);
 
   // Gets stored values from the database.
   Future<String> get title;

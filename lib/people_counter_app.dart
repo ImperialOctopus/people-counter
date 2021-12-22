@@ -94,10 +94,10 @@ class _AppViewState extends State<AppView> {
             pages: const [
               MaterialPage(
                 child: RoomNavigator(
-                  roomSelect: config.presetRoom
-                      ? PresetRoomScreen(
-                          title: config.appTitle, roomName: config.presetName)
-                      : RoomSelectScreen(title: config.appTitle),
+                  roomSelect: config.allowCustomRoomCode
+                      ? RoomSelectScreen(title: config.appTitle)
+                      : PresetRoomScreen(
+                          title: config.appTitle, roomName: config.roomCode),
                 ),
               ),
             ],
