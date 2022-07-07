@@ -42,7 +42,7 @@ class LocationSelect extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline2,
                   ),
                   Text(
-                    'Location Menu',
+                    'Location',
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   const SizedBox(height: 24),
