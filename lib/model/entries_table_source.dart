@@ -16,8 +16,8 @@ class EntriesTableSource extends DataTableSource {
   }
 
   void updateData(StatsState state) {
-    if (state is StatsHasStats) {
-      snapshot = (state as StatsHasStats).snapshot;
+    if (state is StatsLoaded) {
+      snapshot = state.snapshot;
     } else {
       snapshot = null;
     }

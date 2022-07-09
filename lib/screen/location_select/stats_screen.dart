@@ -102,7 +102,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () => BlocProvider.of<StatsBloc>(context)
-                      .add(const ReloadStatsEvent()),
+                      .add(const LoadStatsEvent()),
                   child: const Text('Request Report'),
                 ),
               ],
@@ -125,7 +125,7 @@ class _StatsScreenState extends State<StatsScreen> {
           actions: [
             IconButton(
                 onPressed: () => BlocProvider.of<StatsBloc>(context)
-                    .add(const ReloadStatsEvent()),
+                    .add(const LoadStatsEvent()),
                 icon: const Icon(Icons.refresh))
           ],
         ),

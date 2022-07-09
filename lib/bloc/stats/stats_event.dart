@@ -4,8 +4,8 @@ abstract class StatsEvent extends Equatable {
   const StatsEvent();
 }
 
-class ReloadStatsEvent extends StatsEvent {
-  const ReloadStatsEvent();
+class LoadStatsEvent extends StatsEvent {
+  const LoadStatsEvent();
 
   @override
   List<Object> get props => [];
