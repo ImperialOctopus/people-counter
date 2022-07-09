@@ -23,6 +23,7 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
       yield StatsLoaded(_stats, DateTime.now());
       return;
     }
+
     throw FallThroughError();
   }
 }

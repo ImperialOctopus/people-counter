@@ -22,6 +22,8 @@ class StatsSnapshot extends Equatable {
           return previousValue + 1;
         case LogEntryType.exit:
           return previousValue - 1;
+        case LogEntryType.reset:
+          return 0;
         default:
           throw FallThroughError();
       }

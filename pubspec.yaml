@@ -27,6 +27,8 @@ dependencies:
   equatable: ^2.0.3
   firebase_core: ^1.4.0
   cloud_firestore: ^2.4.0
+  file_saver: ^0.1.0
+  csv: ^5.0.1
   charts_flutter:
     git:
       url: git://github.com/google/charts.git
@@ -38,7 +40,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.9.1
-  csv: ^5.0.0
   firebase: ^9.0.1
 
 # For information on the generic Dart part of this file, see the

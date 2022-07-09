@@ -11,7 +11,7 @@ const bool allowCustomRoomCode = false;
 const String roomCode = 't_carnival_2022';
 
 /// Show option on menu to load the stats page.
-const bool allowStats = false;
+const bool allowStats = true;
 
 /// Show reset button.
 const bool allowReset = true;

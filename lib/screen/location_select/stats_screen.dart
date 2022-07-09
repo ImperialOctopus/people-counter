@@ -1,6 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:charts_flutter/flutter.dart';
+import 'package:csv/csv.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../config.dart';
+import '../../extension/datetime_to_excel_date.dart';
 
 import '../../bloc/stats/stats_bloc.dart';
 import '../../bloc/stats/stats_event.dart';
@@ -253,6 +259,41 @@ class _StatsScreenState extends State<StatsScreen> {
                       ],
                     ),
                   ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    const csvHeaders = [
+                      'location',
+                      'millisecondsSinceEpoch',
+                      'excelTime',
+                      'type',
+                    ];
+
+                    final logs = statsState.snapshot.logs
+                        .map(
+                          (log) => [
+                            widget.roomInfo.locations[log.location],
+                            log.time.millisecondsSinceEpoch.toString(),
+                            log.time.toExcelDate().toString(),
+                            log.type.toString(),
+                          ],
+                        )
+                        .toList();
+
+                    final csvData = const ListToCsvConverter()
+                        .convert([csvHeaders, ...logs]);
+
+                    await FileSaver.instance.saveFile(
+                      roomCode + '_raw',
+                      Uint8List.fromList(csvData.codeUnits),
+                      'csv',
+                      mimeType: MimeType.CSV,
+                    );
+                  },
+                  child: const Text('Export Raw Data'),
                 ),
               ),
               const SizedBox(height: 24),
