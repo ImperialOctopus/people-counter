@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:people_counter/model/room_info.dart';
+import 'package:people_counter/model/database/room_info.dart';
 
 import '../../model/log_entry.dart';
-import '../../model/stats_snapshot.dart';
+import '../../model/database/stats_snapshot.dart';
 import 'room_connection.dart';
 
 /// Database implementation using Firebase

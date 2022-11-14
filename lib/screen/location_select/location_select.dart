@@ -5,9 +5,6 @@ import '../../bloc/room/room_bloc.dart';
 import '../../bloc/room/room_event.dart';
 import '../../bloc/room/room_state.dart';
 import 'counter_screen.dart';
-import 'stats_screen.dart';
-
-import '../../config.dart' as config;
 
 class LocationSelect extends StatelessWidget {
   final RoomStateIn roomState;
@@ -49,7 +46,6 @@ class LocationSelect extends StatelessWidget {
                   ...roomState.roomInfo.locations.asMap().entries.map(
                       (mapEntry) => _locationButton(
                           context, mapEntry.value, mapEntry.key)),
-                  if (config.allowStats) _statsButton(context),
                 ],
               ),
             ),
@@ -76,25 +72,6 @@ class LocationSelect extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _statsButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: OutlinedButton(
-          child: const Text(
-            'Stats',
-            style: TextStyle(fontSize: 18),
-          ),
-          onPressed: () {
-            //BlocProvider.of<StatsBloc>(context).add(const ReloadStatsEvent());
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => StatsScreen(roomInfo: roomState.roomInfo),
-              ),
-            );
-          }),
     );
   }
 }

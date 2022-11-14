@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/counter/counter_bloc.dart';
 import '../../bloc/room/room_state.dart';
-import '../../bloc/stats/stats_bloc.dart';
 import 'location_select.dart';
 
 class LocationNavigator extends StatelessWidget {
@@ -18,9 +17,6 @@ class LocationNavigator extends StatelessWidget {
         BlocProvider<CounterBloc>(
             create: (context) =>
                 CounterBloc(roomConnection: state.roomConnection)),
-        BlocProvider<StatsBloc>(
-            create: (context) =>
-                StatsBloc(roomConnection: state.roomConnection)),
       ],
       child: Navigator(
         pages: [

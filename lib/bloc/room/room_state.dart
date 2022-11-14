@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:people_counter/model/room_info.dart';
+import 'package:people_counter/model/database/room_info.dart';
 
 import '../../service/room/room_connection.dart';
 

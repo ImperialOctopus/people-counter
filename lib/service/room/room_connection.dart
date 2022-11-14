@@ -1,5 +1,5 @@
-import '../../model/room_info.dart';
-import '../../model/stats_snapshot.dart';
+import '../../model/database/room_info.dart';
+import '../../model/database/stats_snapshot.dart';
 
 /// Interface for database service.
 abstract class RoomConnection {
