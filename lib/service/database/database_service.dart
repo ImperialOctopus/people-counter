@@ -1,6 +1,17 @@
-import '../room/room_connection.dart';
-
-// ignore: one_member_abstracts
 abstract class DatabaseService {
-  Future<RoomConnection> getRoomByName(String name);
+  Future<EventConnection> getEventByName(String name);
+}
+
+abstract class EventConnection {
+  Future<String> get name;
+  Future<List<LocationConnection>> get locations;
+}
+
+abstract class LocationConnection {
+  Future<void> sendIncrement();
+  Future<void> sendDecrement();
+  Future<void> sendReset();
+
+  Future<String> get name;
+  Stream<int> get valuesStream;
 }
