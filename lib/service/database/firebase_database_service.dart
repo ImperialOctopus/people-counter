@@ -10,82 +10,60 @@ import 'database_service.dart';
 
 class FirebaseDatabaseService implements DatabaseService {
   @override
-  Future<FirebaseRoomConnection> getRoomByName(String name) async =>
-      FirebaseRoomConnection(name);
+  Future<EventConnection> getEventByCode(String code) async =>
+      FirebaseEventConnection(code);
 }
 
-class FirebaseEventConnection implements EventConnection {}
+class FirebaseEventConnection implements EventConnection {
+  static const String _defaultTitle = 'Event Name Not Found';
 
-class FirebaseLocationConnection implements LocationConnection {}
-
-/// Database implementation using Firebase
-class FirebaseRoomConnection implements RoomConnection {
-  static const String _defaultTitle = 'Unknown Event';
-  static const List<String> _defaultLocations = [];
-
-  final String roomName;
+  @override
+  final String code;
 
   late final CollectionReference<Map<String, dynamic>> _collectionReference;
 
-  Future<List<String>>? _locations;
-  Future<String>? _title;
-  Stream<List<int>>? _valuesStream;
+  Future<String>? _name;
 
-  FirebaseRoomConnection(this.roomName) {
+  FirebaseEventConnection(this.code) {
     // Sets the reference to collection at root/{room name}
-    _collectionReference = FirebaseFirestore.instance.collection(roomName);
-
-    locations;
-    title;
-    valuesStream;
-  }
-
-  /// Static information
-  @override
-  Future<List<String>> get locations async {
-    _locations ??= _collectionReference.doc('locations').get().then((value) =>
-        (value.data()?['names'] as List<dynamic>?)?.cast<String>() ??
-        _defaultLocations);
-    return _locations!;
+    _collectionReference = FirebaseFirestore.instance.collection(code);
   }
 
   @override
-  Future<String> get title async {
-    _title ??= _collectionReference
+  Future<String> get name {
+    _name ??= _collectionReference
         .doc('meta')
         .get()
         .then((value) => value.data()?['name'] as String? ?? _defaultTitle);
-
-    return _title!;
+    return _name!;
   }
 
   @override
-  Future<RoomInfo> get roomInfo async {
-    return RoomInfo(title: await title, locations: await locations);
-  }
+  Future<List<LocationConnection>> get locations async {
+    final _names = await _collectionReference.doc('locations').get().then(
+        (value) =>
+            (value.data()?['names'] as List<dynamic>?)?.cast<String>() ?? []);
 
-  @override
-  Stream<List<int>> get valuesStream {
     _valuesStream ??= _collectionReference
         .doc('locations')
         .snapshots()
         .map<List<int>>((snapshot) =>
             (snapshot.data()?['values'] as List<dynamic>).cast<int>());
-    return _valuesStream!;
   }
+}
 
-  Stream<int> get totalStream =>
-      valuesStream.map((list) => list.fold(0, (a, b) => a + b));
+class FirebaseLocationConnection implements LocationConnection {
+  final int index;
 
   @override
-  Future<void> incrementLocation(int index) async {
+  Future<void> sendIncrement() async {
     await _updateLocation(index,
         validator: (i) => true, transform: (i) => i + 1);
     await _addStat(LogEntry.entry(location: index));
   }
 
   @override
-  Future<void> decrementLocation(int index) async {
+  Future<void> sendDecrement() async {
     if (await _updateLocation(
       index,
       validator: (i) => i > 0,
@@ -96,7 +74,7 @@ class FirebaseRoomConnection implements RoomConnection {
   }
 
   @override
-  Future<void> resetLocation(int index) async {
+  Future<void> sendReset() async {
     if (await _updateLocation(
       index,
       validator: (i) => i > 0,
@@ -129,20 +107,6 @@ class FirebaseRoomConnection implements RoomConnection {
           .update(_collectionReference.doc('locations'), {'values': _values});
       return true;
     });
-  }
-
-  @override
-  Future<StatsSnapshot> get stats async {
-    return StatsSnapshot(
-      logs: await _collectionReference
-          .doc('stats')
-          .collection('logs')
-          .get()
-          .then((value) => value.docs
-              .map((snapshot) => LogEntry.fromFirebaseData(snapshot.data()))
-              .toList()
-            ..sort()),
-    );
   }
 
   Future<void> _addStat(LogEntry logEntry) async {

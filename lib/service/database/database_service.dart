@@ -1,5 +1,5 @@
 abstract class DatabaseService {
-  Future<EventConnection> getEventByName(String name);
+  Future<EventConnection> getEventByCode(String code);
 }
 
 abstract class EventConnection {
