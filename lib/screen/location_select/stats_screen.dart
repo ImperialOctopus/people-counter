@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:charts_flutter/flutter.dart';
 import 'package:csv/csv.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
@@ -195,41 +194,11 @@ class _StatsScreenState extends State<StatsScreen> {
                 style: Theme.of(context).textTheme.headline2,
               ),
               const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 48),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 48),
                 child: SizedBox(
                   height: 400,
-                  child: TimeSeriesChart(
-                    [
-                      Series<EntriesChartPoint, DateTime>(
-                        id: 'Entries',
-                        colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
-                        domainFn: (EntriesChartPoint entries, _) =>
-                            entries.time,
-                        measureFn: (EntriesChartPoint entries, _) =>
-                            entries.frequency,
-                        data: [
-                          ..._chartRange.map(
-                            (time) => EntriesChartPoint(
-                                time: time,
-                                frequency: (time.isBefore(DateTime.now()))
-                                    ? _snapshot.totalBefore(time)
-                                    : null),
-                          ),
-                          if (_isWithinRange)
-                            EntriesChartPoint(
-                                time: DateTime.now(),
-                                frequency:
-                                    _snapshot.totalBefore(DateTime.now()))
-                        ],
-                      ),
-                    ],
-                    animate: false,
-                    // Optionally pass in a [DateTimeFactory] used by the chart. The factory
-                    // should create the same type of [DateTime] as the data provided. If none
-                    // specified, the default creates local date time.
-                    dateTimeFactory: const LocalDateTimeFactory(),
-                  ),
+                  child: Text('No charts library'),
                 ),
               ),
 
