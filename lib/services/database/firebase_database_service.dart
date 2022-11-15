@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:people_counter/model/database/room_info.dart';
 
-import '../../model/log_entry.dart';
-import '../../model/database/stats_snapshot.dart';
+import '../../models/log_entry.dart';
 import 'database_service.dart';
 
 class FirebaseDatabaseService implements DatabaseService {
@@ -17,14 +14,11 @@ class FirebaseDatabaseService implements DatabaseService {
 class FirebaseEventConnection implements EventConnection {
   static const String _defaultTitle = 'Event Name Not Found';
 
-  @override
-  final String code;
-
   late final CollectionReference<Map<String, dynamic>> _collectionReference;
 
   Future<String>? _name;
 
-  FirebaseEventConnection(this.code) {
+  FirebaseEventConnection(String code) {
     // Sets the reference to collection at root/{room name}
     _collectionReference = FirebaseFirestore.instance.collection(code);
   }
@@ -40,47 +34,69 @@ class FirebaseEventConnection implements EventConnection {
 
   @override
   Future<List<LocationConnection>> get locations async {
-    final _names = await _collectionReference.doc('locations').get().then(
+    final names = await _collectionReference.doc('locations').get().then(
         (value) =>
-            (value.data()?['names'] as List<dynamic>?)?.cast<String>() ?? []);
+            (value.data()?['names'] as List<dynamic>?)?.cast<String>() ??
+            <String>[]);
 
-    _valuesStream ??= _collectionReference
+    final valuesStream = _collectionReference
         .doc('locations')
         .snapshots()
         .map<List<int>>((snapshot) =>
             (snapshot.data()?['values'] as List<dynamic>).cast<int>());
+
+    return names.asMap().entries.map((entry) {
+      final index = entry.key;
+      final name = entry.value;
+      final singleStream = valuesStream.map((values) => values[index]);
+      return FirebaseLocationConnection(
+          _collectionReference, name, index, singleStream);
+    }).toList();
   }
 }
 
 class FirebaseLocationConnection implements LocationConnection {
-  final int index;
+  final CollectionReference<Map<String, dynamic>> _collectionReference;
+
+  final String _name;
+
+  final int _index;
+
+  @override
+  final Stream<int> valuesStream;
+
+  @override
+  Future<String> get name async => _name;
+
+  const FirebaseLocationConnection(
+      this._collectionReference, this._name, this._index, this.valuesStream);
 
   @override
   Future<void> sendIncrement() async {
-    await _updateLocation(index,
+    await _updateLocation(_index,
         validator: (i) => true, transform: (i) => i + 1);
-    await _addStat(LogEntry.entry(location: index));
+    await _addStat(LogEntry.entry(location: _index));
   }
 
   @override
   Future<void> sendDecrement() async {
     if (await _updateLocation(
-      index,
+      _index,
       validator: (i) => i > 0,
       transform: (i) => i - 1,
     )) {
-      await _addStat(LogEntry.exit(location: index));
+      await _addStat(LogEntry.exit(location: _index));
     }
   }
 
   @override
   Future<void> sendReset() async {
     if (await _updateLocation(
-      index,
+      _index,
       validator: (i) => i > 0,
       transform: (i) => 0,
     )) {
-      await _addStat(LogEntry.reset(location: index));
+      await _addStat(LogEntry.reset(location: _index));
     }
   }
 
@@ -90,21 +106,21 @@ class FirebaseLocationConnection implements LocationConnection {
     return await FirebaseFirestore.instance
         .runTransaction<bool>((transaction) async {
       // Increment value
-      final List<int> _values = await transaction
+      final List<int> values = await transaction
           .get(_collectionReference.doc('locations'))
           .then((value) =>
               (value.data()?['values'] as List<dynamic>).cast<int>());
 
-      var _value = _values[index];
+      var value = values[index];
 
-      if (!validator(_value)) {
+      if (!validator(value)) {
         return false;
       }
-      _value = transform(_value);
-      _values[index] = _value;
+      value = transform(value);
+      values[index] = value;
 
       transaction
-          .update(_collectionReference.doc('locations'), {'values': _values});
+          .update(_collectionReference.doc('locations'), {'values': values});
       return true;
     });
   }

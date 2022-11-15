@@ -12,8 +12,8 @@ class CounterStateLoading extends CounterState {
 }
 
 class CounterStateLive extends CounterState {
-  final List<int> value;
-  List<int> get live => value;
+  final int value;
+  int get live => value;
 
   const CounterStateLive(this.value);
 
@@ -23,9 +23,9 @@ class CounterStateLive extends CounterState {
 
 class CounterStateDebounce extends CounterStateLive {
   @override
-  final List<int> live;
+  final int live;
 
-  const CounterStateDebounce(List<int> value, this.live) : super(value);
+  const CounterStateDebounce(super.value, this.live);
 
   @override
   List<Object> get props => [value, live];

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/counter/counter_bloc.dart';
-import '../../bloc/counter/counter_event.dart';
-import '../../bloc/counter/counter_state.dart';
+import '../../blocs/counter/counter_bloc.dart';
+import '../../blocs/counter/counter_event.dart';
+import '../../blocs/counter/counter_state.dart';
 
 import '../../config.dart' as config;
 

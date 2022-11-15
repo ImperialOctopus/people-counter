@@ -1,3 +1,5 @@
+import 'dart:async';
+
 abstract class DatabaseService {
   Future<EventConnection> getEventByCode(String code);
 }

@@ -2,14 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/room/room_bloc.dart';
+import 'blocs/room/room_bloc.dart';
 import 'config.dart' as config;
-import 'screen/room_select/preset_room_screen.dart';
-import 'screen/room_select/room_navigator.dart';
-import 'screen/room_select/room_select_screen.dart';
-import 'service/database/database_service.dart';
-import 'service/database/firebase_database_service.dart';
-import 'theme/theme.dart';
+import 'screens/room_select/preset_room_screen.dart';
+import 'screens/room_select/room_navigator.dart';
+import 'screens/room_select/room_select_screen.dart';
+import 'services/database/database_service.dart';
+import 'services/database/firebase_database_service.dart';
+import 'themes/theme.dart';
 
 /// Full app widget.
 class PeopleCounterApp extends StatefulWidget {

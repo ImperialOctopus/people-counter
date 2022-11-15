@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/room/room_bloc.dart';
-import '../../bloc/room/room_state.dart';
+import '../../blocs/room/room_bloc.dart';
+import '../../blocs/room/room_state.dart';
 import '../location_select/location_navigator.dart';
 
 class RoomNavigator extends StatelessWidget {

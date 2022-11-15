@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:people_counter/services/database/database_service.dart';
 
 import '../../service/room/room_connection.dart';
 import 'counter_event.dart';
@@ -8,16 +9,16 @@ import 'counter_state.dart';
 
 /// Cubit to hold main count.
 class CounterBloc extends Bloc<CounterEvent, CounterState> {
-  final RoomConnection _roomConnection;
+  final LocationConnection _locationConnection;
 
   Timer? _timer;
   late final StreamSubscription _streamSubscription;
 
   /// Cubit to hold main count.
-  CounterBloc({required RoomConnection roomConnection})
-      : _roomConnection = roomConnection,
+  CounterBloc({required LocationConnection locationConnection})
+      : _locationConnection = locationConnection,
         super(const CounterStateLoading()) {
-    _streamSubscription = _roomConnection.valuesStream.listen((value) {
+    _streamSubscription = _locationConnection.valuesStream.listen((value) {
       add(CounterEventReceivedChange(value));
     });
   }

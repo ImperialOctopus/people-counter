@@ -9,7 +9,7 @@ abstract class CounterEvent extends Equatable {
 /// Counter number changed.
 class CounterEventReceivedChange extends CounterEvent {
   /// New value.
-  final List<int> value;
+  final int value;
 
   /// Counter number changed.
   const CounterEventReceivedChange(this.value);
@@ -19,32 +19,30 @@ class CounterEventReceivedChange extends CounterEvent {
 }
 
 abstract class CounterEventChange extends CounterEvent {
-  final int index;
-
   int get change;
 
-  const CounterEventChange(this.index);
+  const CounterEventChange();
 
   @override
-  List<Object> get props => [index];
+  List<Object> get props => [];
 }
 
 class CounterEventIncrement extends CounterEventChange {
-  const CounterEventIncrement(int index) : super(index);
+  const CounterEventIncrement() : super();
 
   @override
   int get change => 1;
 }
 
 class CounterEventDecrement extends CounterEventChange {
-  const CounterEventDecrement(int index) : super(index);
+  const CounterEventDecrement() : super();
 
   @override
   int get change => -1;
 }
 
 class CounterEventEndDebounce extends CounterEvent {
-  final List<int> value;
+  final int value;
 
   const CounterEventEndDebounce(this.value);
 
@@ -53,10 +51,8 @@ class CounterEventEndDebounce extends CounterEvent {
 }
 
 class CounterEventReset extends CounterEvent {
-  final int index;
-
-  const CounterEventReset(this.index);
+  const CounterEventReset();
 
   @override
-  List<Object?> get props => [index];
+  List<Object?> get props => [];
 }

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../service/database/database_service.dart';
+import '../../services/database/database_service.dart';
 import 'room_event.dart';
 import 'room_state.dart';
 
