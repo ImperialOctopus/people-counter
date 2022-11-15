@@ -4,32 +4,31 @@ abstract class DatabaseState extends Equatable {
   const DatabaseState();
 }
 
-class RoomStateNone extends RoomState {
-  const RoomStateNone();
+class DatabaseUnloaded extends DatabaseState {
+  const DatabaseUnloaded();
 
   @override
   List<Object> get props => [];
 }
 
-class RoomStateLoading extends RoomState {
+class DatabaseLoading extends DatabaseState {
+  const DatabaseLoading();
+
   @override
   List<Object> get props => [];
 }
 
-class RoomStateIn extends RoomState {
-  final RoomConnection roomConnection;
-  final RoomInfo roomInfo;
-
-  const RoomStateIn(this.roomConnection, this.roomInfo);
+class DatabaseLoaded extends DatabaseState {
+  const DatabaseLoaded();
 
   @override
-  List<Object> get props => [roomConnection];
+  List<Object> get props => [];
 }
 
-class RoomStateError extends RoomState {
+class DatabaseError extends DatabaseState {
   final String message;
 
-  const RoomStateError([this.message = '']);
+  const DatabaseError([this.message = '']);
 
   @override
   List<Object> get props => [message];
