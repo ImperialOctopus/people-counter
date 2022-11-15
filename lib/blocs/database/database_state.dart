@@ -1,10 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:people_counter/model/database/room_info.dart';
 
-import '../../service/room/room_connection.dart';
-
-abstract class RoomState extends Equatable {
-  const RoomState();
+abstract class DatabaseState extends Equatable {
+  const DatabaseState();
 }
 
 class RoomStateNone extends RoomState {

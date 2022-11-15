@@ -1,13 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../services/database/database_service.dart';
-import 'room_event.dart';
-import 'room_state.dart';
+import 'database_event.dart';
+import 'database_state.dart';
 
-class RoomBloc extends Bloc<RoomEvent, RoomState> {
+class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   final DatabaseService databaseService;
 
-  RoomBloc(this.databaseService) : super(const RoomStateNone());
+  DatabaseBloc(this.databaseService) : super(const RoomStateNone());
 
   @override
   Stream<RoomState> mapEventToState(RoomEvent event) async* {

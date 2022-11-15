@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../blocs/counter/counter_bloc.dart';
-import '../../blocs/room/room_state.dart';
+import '../../blocs/location/location_bloc.dart';
+import '../../blocs/database/database_state.dart';
 import 'location_select.dart';
 
 class LocationNavigator extends StatelessWidget {

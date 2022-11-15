@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import '../../models/log_entry.dart';
 import 'database_service.dart';
@@ -9,6 +10,11 @@ class FirebaseDatabaseService implements DatabaseService {
   @override
   Future<EventConnection> getEventByCode(String code) async =>
       FirebaseEventConnection(code);
+
+  @override
+  Future<void> initialise() async {
+    await Firebase.initializeApp();
+  }
 }
 
 class FirebaseEventConnection implements EventConnection {
