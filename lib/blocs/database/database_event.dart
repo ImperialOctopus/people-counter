@@ -1,8 +1,18 @@
 import 'package:equatable/equatable.dart';
 
 abstract class DatabaseEvent extends Equatable {
-  const RoomEvent();
+  const DatabaseEvent();
 }
+
+class AppStartedEvent extends DatabaseEvent {
+
+}
+
+class LoadDatabaseEvent extends DatabaseEvent {
+
+}
+
+class 
 
 class LeaveRoomEvent extends RoomEvent {
   const LeaveRoomEvent();

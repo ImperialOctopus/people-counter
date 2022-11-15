@@ -7,7 +7,10 @@ import 'database_state.dart';
 class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   final DatabaseService databaseService;
 
-  DatabaseBloc(this.databaseService) : super(const RoomStateNone());
+  DatabaseBloc(this.databaseService) : super(const DatabaseUnloaded())
+  {
+    on<
+  }
 
   @override
   Stream<RoomState> mapEventToState(RoomEvent event) async* {
