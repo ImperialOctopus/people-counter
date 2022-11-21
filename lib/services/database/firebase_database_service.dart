@@ -24,7 +24,10 @@ class FirebaseEventConnection implements EventConnection {
 
   Future<String>? _name;
 
-  FirebaseEventConnection(String code) {
+  @override
+  String code;
+
+  FirebaseEventConnection(this.code) {
     // Sets the reference to collection at root/{room name}
     _collectionReference = FirebaseFirestore.instance.collection(code);
   }

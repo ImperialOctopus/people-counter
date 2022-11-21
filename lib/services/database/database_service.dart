@@ -6,6 +6,7 @@ abstract class DatabaseService {
 }
 
 abstract class EventConnection {
+  String get code;
   Future<String> get name;
   Future<List<LocationConnection>> get locations;
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'screens/room_select/preset_room_screen.dart';
-import 'screens/room_select/room_navigator.dart';
-import 'screens/room_select/room_select_screen.dart';
+import 'screens/events_list/preset_room_screen.dart';
+import 'screens/events_list/room_navigator.dart';
+import 'screens/events_list/room_select_screen.dart';
 import 'services/database/database_service.dart';
 import 'services/database/firebase_database_service.dart';
 import 'themes/theme.dart';
