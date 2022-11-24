@@ -1,14 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:people_counter/services/saved_codes/saved_codes_service.dart';
+import 'package:people_counter/repositories/saved_codes/saved_codes_repository.dart';
 
 import 'code_list_event.dart';
 import 'code_list_state.dart';
 
 class CodeListBloc extends Bloc<CodeListEvent, CodeListState> {
-  final SavedCodesService savedCodesService;
+  final SavedCodesRepository savedCodesRepository;
 
   CodeListBloc({
-    required this.savedCodesService,
+    required this.savedCodesRepository,
   }) : super(const CodeListUnloaded()) {
     on<LoadSavedCodesEvent>(_onLoadSavedCodes);
     on<AddCodeEvent>(_onAddCode);
@@ -20,7 +20,7 @@ class CodeListBloc extends Bloc<CodeListEvent, CodeListState> {
     emitter(const CodeListLoading('Loading saved codes...'));
 
     try {
-      final list = await savedCodesService.getSavedCodes;
+      final list = await savedCodesRepository.getSavedCodes;
       emitter(CodeListLoaded(list));
     } catch (e) {
       emitter(CodeListError(e.toString()));
@@ -31,7 +31,7 @@ class CodeListBloc extends Bloc<CodeListEvent, CodeListState> {
     final currentState = state;
 
     try {
-      await savedCodesService.saveCode(event.code);
+      await savedCodesRepository.saveCode(event.code);
 
       if (currentState is CodeListLoaded) {
         emitter(CodeListLoaded([...currentState.codes, event.code]));
@@ -48,7 +48,7 @@ class CodeListBloc extends Bloc<CodeListEvent, CodeListState> {
     final currentState = state;
 
     try {
-      await savedCodesService.removeCode(event.code);
+      await savedCodesRepository.removeCode(event.code);
 
       if (currentState is CodeListLoaded) {
         emitter(

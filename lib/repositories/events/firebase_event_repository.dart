@@ -4,45 +4,54 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import '../../models/log_entry.dart';
-import 'database_service.dart';
+import 'events_repository.dart';
 
-class FirebaseDatabaseService implements DatabaseService {
-  @override
-  Future<EventConnection> getEventByCode(String code) async =>
-      FirebaseEventConnection(code);
+class FirebaseEventsRepository implements EventsRepository {
+  const FirebaseEventsRepository._();
 
-  @override
-  Future<void> initialise() async {
+  static Future<FirebaseEventsRepository> initialise() async {
     await Firebase.initializeApp();
+    return const FirebaseEventsRepository._();
   }
+
+  @override
+  Future<EventConnection> getEventByCode(String code) =>
+      FirebaseEventConnection.initialise(code);
 }
 
 class FirebaseEventConnection implements EventConnection {
   static const String _defaultTitle = 'Event Name Not Found';
 
-  late final CollectionReference<Map<String, dynamic>> _collectionReference;
+  final CollectionReference<Map<String, dynamic>> _collectionReference;
 
-  Future<String>? _name;
+  final String _name;
 
   @override
-  String code;
+  final String code;
 
-  FirebaseEventConnection(this.code) {
+  const FirebaseEventConnection._(
+    this.code,
+    this._collectionReference,
+    this._name,
+  );
+
+  static Future<FirebaseEventConnection> initialise(String code) async {
     // Sets the reference to collection at root/{room name}
-    _collectionReference = FirebaseFirestore.instance.collection(code);
-  }
+    final collectionReference = FirebaseFirestore.instance.collection(code);
 
-  @override
-  Future<String> get name {
-    _name ??= _collectionReference
+    final name = await collectionReference
         .doc('meta')
         .get()
         .then((value) => value.data()?['name'] as String? ?? _defaultTitle);
-    return _name!;
+
+    return FirebaseEventConnection._(code, collectionReference, name);
   }
 
   @override
-  Future<List<LocationConnection>> get locations async {
+  String get name => _name;
+
+  @override
+  Future<List<Future<LocationConnection>>> get locations async {
     final names = await _collectionReference.doc('locations').get().then(
         (value) =>
             (value.data()?['names'] as List<dynamic>?)?.cast<String>() ??
@@ -58,7 +67,7 @@ class FirebaseEventConnection implements EventConnection {
       final index = entry.key;
       final name = entry.value;
       final singleStream = valuesStream.map((values) => values[index]);
-      return FirebaseLocationConnection(
+      return FirebaseLocationConnection.initialise(
           _collectionReference, name, index, singleStream);
     }).toList();
   }
@@ -75,10 +84,20 @@ class FirebaseLocationConnection implements LocationConnection {
   final Stream<int> valuesStream;
 
   @override
-  Future<String> get name async => _name;
+  String get name => _name;
 
-  const FirebaseLocationConnection(
+  const FirebaseLocationConnection._(
       this._collectionReference, this._name, this._index, this.valuesStream);
+
+  static Future<LocationConnection> initialise(
+    CollectionReference<Map<String, dynamic>> collectionReference,
+    String name,
+    int index,
+    Stream<int> valuesStream,
+  ) async {
+    return FirebaseLocationConnection._(
+        collectionReference, name, index, valuesStream);
+  }
 
   @override
   Future<void> sendIncrement() async {

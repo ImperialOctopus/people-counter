@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'screens/events_list/preset_room_screen.dart';
-import 'screens/events_list/room_navigator.dart';
-import 'screens/events_list/room_select_screen.dart';
-import 'services/database/database_service.dart';
-import 'services/database/firebase_database_service.dart';
-import 'themes/theme.dart';
+import 'repositories/events/events_repository.dart';
+import 'repositories/events/firebase_event_repository.dart';
+import 'themes/people_counter_theme.dart';
+import 'view/shared/error_page.dart';
+import 'view/shared/loading_page.dart';
+import 'view/welcome_screen.dart';
 
 /// Full app widget.
 class PeopleCounterApp extends StatefulWidget {
+  static const title = 'People Counter';
+
   const PeopleCounterApp({super.key});
 
   @override
@@ -17,40 +19,44 @@ class PeopleCounterApp extends StatefulWidget {
 }
 
 class _PeopleCounterAppState extends State<PeopleCounterApp> {
-  late final DatabaseService _databaseService;
+  late final Future<EventsRepository> _eventsRepository;
 
   @override
   void initState() {
     super.initState();
 
-    _databaseService = FirebaseDatabaseService();
+    _eventsRepository = FirebaseEventsRepository.initialise();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: config.appTitle,
-      theme: themeData,
-      home: MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider<DatabaseService>.value(value: _databaseService),
-        ],
-        child: MultiBlocProvider(
-            providers: [],
-            child: Navigator(
-              pages: const [
-                MaterialPage(
-                  child: RoomNavigator(
-                    roomSelect: config.allowCustomRoomCode
-                        ? RoomSelectScreen(title: config.appTitle)
-                        : PresetRoomScreen(
-                            title: config.appTitle, roomName: config.roomCode),
-                  ),
-                ),
-              ],
-              onPopPage: (route, result) => route.didPop(result),
-            )),
-      ),
+      title: PeopleCounterApp.title,
+      theme: PeopleCounterTheme.light,
+      darkTheme: PeopleCounterTheme.dark,
+      home: FutureBuilder(
+          future: _eventsRepository,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return MultiRepositoryProvider(
+                providers: [
+                  RepositoryProvider<EventsRepository>.value(
+                      value: snapshot.data!),
+                ],
+                child: const WelcomeScreen(),
+              );
+            } else if (snapshot.hasError) {
+              return Scaffold(
+                body: ErrorPage(
+                    message:
+                        'Error loading database connection. Check your internet connection and try again. Further information: ${snapshot.error}'),
+              );
+            } else {
+              return const Scaffold(
+                body: LoadingPage(message: 'Loading database connector...'),
+              );
+            }
+          }),
     );
   }
 }

@@ -1,14 +1,13 @@
 import 'dart:async';
 
-abstract class DatabaseService {
-  Future<void> initialise();
+abstract class EventsRepository {
   Future<EventConnection> getEventByCode(String code);
 }
 
 abstract class EventConnection {
   String get code;
-  Future<String> get name;
-  Future<List<LocationConnection>> get locations;
+  String get name;
+  Future<List<Future<LocationConnection>>> get locations;
 }
 
 abstract class LocationConnection {
@@ -16,6 +15,6 @@ abstract class LocationConnection {
   Future<void> sendDecrement();
   Future<void> sendReset();
 
-  Future<String> get name;
+  String get name;
   Stream<int> get valuesStream;
 }

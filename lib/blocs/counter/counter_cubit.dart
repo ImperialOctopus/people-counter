@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:people_counter/services/database/database_service.dart';
+import 'package:people_counter/repositories/events/events_repository.dart';
 
 /// Cubit to hold main count.
-class LocationCubit extends Cubit<int> {
+class CounterCubit extends Cubit<int> {
   static const _debounceDelay = Duration(milliseconds: 200);
 
   final LocationConnection _locationConnection;
@@ -15,7 +15,7 @@ class LocationCubit extends Cubit<int> {
   int _debounceHeldValue = 0;
 
   /// Cubit to hold main count.
-  LocationCubit({required LocationConnection locationConnection})
+  CounterCubit({required LocationConnection locationConnection})
       : _locationConnection = locationConnection,
         super(0) {
     _streamSubscription =
