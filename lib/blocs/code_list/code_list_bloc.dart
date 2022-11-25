@@ -21,7 +21,7 @@ class CodeListBloc extends Bloc<CodeListEvent, CodeListState> {
 
     try {
       final list = await savedCodesRepository.getSavedCodes;
-      emitter(CodeListLoaded(list));
+      emitter(CodeListLoaded(sortList(list)));
     } catch (e) {
       emitter(CodeListError(e.toString()));
     }
@@ -30,7 +30,7 @@ class CodeListBloc extends Bloc<CodeListEvent, CodeListState> {
   void _onAddCode(AddCodeEvent event, Emitter<CodeListState> emitter) async {
     try {
       final list = await savedCodesRepository.saveCode(event.code);
-      emitter(CodeListLoaded(list));
+      emitter(CodeListLoaded(sortList(list)));
     } catch (e) {
       emitter(CodeListError(e.toString()));
     }
@@ -40,9 +40,13 @@ class CodeListBloc extends Bloc<CodeListEvent, CodeListState> {
       RemoveCodeEvent event, Emitter<CodeListState> emitter) async {
     try {
       final list = await savedCodesRepository.removeCode(event.code);
-      emitter(CodeListLoaded(list));
+      emitter(CodeListLoaded(sortList(list)));
     } catch (e) {
       emitter(CodeListError(e.toString()));
     }
+  }
+
+  List<String> sortList(Iterable<String> list) {
+    return list.toList()..sort();
   }
 }

@@ -31,6 +31,20 @@ class _LocationListItemState extends State<LocationListItem> {
               snapshot.data!,
               widget.roomName,
             )),
+            trailing: StreamBuilder(
+              stream: snapshot.data!.valuesStream,
+              initialData: null,
+              builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return const CircularProgressIndicator();
+                } else {
+                  return Text(
+                    snapshot.data.toString(),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  );
+                }
+              },
+            ),
           );
         } else if (snapshot.hasError) {
           return ListCard(
