@@ -43,6 +43,7 @@ class _EventsListItemState extends State<EventsListItem> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return ListTile(
             leading: const CircularProgressIndicator(),
+            title: Text('Loading $code'),
             visualDensity: tileDensity,
             horizontalTitleGap: 8,
             onLongPress: _onLongPress,
