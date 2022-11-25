@@ -17,6 +17,7 @@ class LocationList extends StatelessWidget {
     return ListView.builder(
       itemCount: locationConnections.length,
       itemBuilder: (context, index) => LocationListItem(
+        key: ValueKey(locationConnections[index]),
         locationConnection: locationConnections[index],
         roomName: roomName,
       ),

@@ -89,8 +89,10 @@ class EventsListLoadedView extends StatelessWidget {
             )
           : ListView.builder(
               itemCount: codes.length,
-              itemBuilder: (context, index) =>
-                  EventsListItem(code: codes.elementAt(index)),
+              itemBuilder: (context, index) => EventsListItem(
+                key: ValueKey(codes.elementAt(index)),
+                code: codes.elementAt(index),
+              ),
             ),
     );
   }
