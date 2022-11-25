@@ -27,10 +27,12 @@ class WelcomeScreen extends StatelessWidget {
               Text(
                 Config.appTitleLeadIn,
                 style: Theme.of(context).textTheme.headlineMedium,
+                textAlign: TextAlign.center,
               ),
               Text(
                 Config.appTitle,
                 style: Theme.of(context).textTheme.displayMedium,
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 64),
               Ink(

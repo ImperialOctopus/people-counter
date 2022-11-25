@@ -43,7 +43,8 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
       ),
       title: Text(
         "Add Event",
-        style: Theme.of(context).textTheme.headlineMedium,
+        style: Theme.of(context).textTheme.headlineSmall,
+        textAlign: TextAlign.center,
       ),
       content: SizedBox(
         //height: 400,
@@ -130,7 +131,8 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
       ),
       title: Text(
         "Finding event...",
-        style: Theme.of(context).textTheme.headlineMedium,
+        style: Theme.of(context).textTheme.headlineSmall,
+        textAlign: TextAlign.center,
       ),
       content: SizedBox(
         //height: 400,
@@ -173,7 +175,8 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
       ),
       title: Text(
         'Event found: ${eventConnection.name}',
-        style: Theme.of(context).textTheme.headlineMedium,
+        style: Theme.of(context).textTheme.headlineSmall,
+        textAlign: TextAlign.center,
       ),
       content: SizedBox(
         //height: 400,
@@ -217,8 +220,9 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
         top: 10.0,
       ),
       title: Text(
-        "Couldn't find event: '${_textFieldController.value.text}'",
-        style: Theme.of(context).textTheme.headlineMedium,
+        "'${_textFieldController.value.text}' not found.",
+        style: Theme.of(context).textTheme.headlineSmall,
+        textAlign: TextAlign.center,
       ),
       content: SizedBox(
         //height: 400,
