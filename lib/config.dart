@@ -1,12 +1,13 @@
-import 'package:people_counter/themes/app_theme.dart';
 import 'package:people_counter/themes/winter_theme.dart';
 
 class Config {
-  static const String headerImage = 'assets/christmas_logo.webp';
+  static const counterDebounceDelay = Duration(milliseconds: 1000);
 
-  static const String appTitle = 'People Counter';
+  static const headerImage = 'assets/christmas_logo.webp';
 
-  static const AppTheme theme = WinterTheme();
+  static const appTitle = 'People Counter';
 
-  static const Set<String> presetEventsList = {'t_christmas_2022'};
+  static const theme = WinterTheme();
+
+  static const presetEventsList = {'t_christmas_2022'};
 }

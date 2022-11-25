@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:people_counter/config.dart';
 import 'package:people_counter/repositories/events/events_repository.dart';
 
 /// Cubit to hold main count.
 class CounterCubit extends Cubit<int> {
-  static const _debounceDelay = Duration(milliseconds: 200);
+  static const _debounceDelay = Config.counterDebounceDelay;
 
   final LocationConnection _locationConnection;
 

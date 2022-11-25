@@ -30,6 +30,28 @@ class CounterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CounterCubit(locationConnection: locationConnection),
+      child: CounterScreenView(
+        locationConnection: locationConnection,
+        eventName: eventName,
+      ),
+    );
+  }
+}
+
+class CounterScreenView extends StatelessWidget {
+  final LocationConnection locationConnection;
+  final String eventName;
+
+  const CounterScreenView({
+    super.key,
+    required this.locationConnection,
+    required this.eventName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
