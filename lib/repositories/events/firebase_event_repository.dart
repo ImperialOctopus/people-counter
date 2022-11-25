@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:people_counter/errors/event_not_found_exception.dart';
 
 import '../../firebase_options.dart';
 import '../../models/log_entry.dart';
@@ -18,7 +17,7 @@ class FirebaseEventsRepository implements EventsRepository {
   }
 
   @override
-  Future<EventConnection> getEventByCode(String code) =>
+  Future<EventConnection?> getEventByCode(String code) async =>
       FirebaseEventConnection.initialise(code);
 }
 
@@ -36,7 +35,7 @@ class FirebaseEventConnection implements EventConnection {
     this._name,
   );
 
-  static Future<FirebaseEventConnection> initialise(String code) async {
+  static Future<FirebaseEventConnection?> initialise(String code) async {
     // Sets the reference to collection at root/{room name}
     final collectionReference = FirebaseFirestore.instance.collection(code);
 
@@ -46,7 +45,7 @@ class FirebaseEventConnection implements EventConnection {
         .then((value) => value.data()?['name'] as String?);
 
     if (name == null) {
-      throw const EventNotFoundException();
+      return null;
     }
 
     return FirebaseEventConnection._(code, collectionReference, name);

@@ -23,7 +23,7 @@ class EventsListItem extends StatefulWidget {
 class _EventsListItemState extends State<EventsListItem> {
   static const tileDensity = VisualDensity(vertical: 3);
 
-  late final Future<EventConnection> eventConnection;
+  late final Future<EventConnection?> eventConnection;
   late final Future<String> name;
   late final String code;
 
@@ -40,7 +40,14 @@ class _EventsListItemState extends State<EventsListItem> {
     return FutureBuilder(
       future: eventConnection,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return ListTile(
+            leading: const CircularProgressIndicator(),
+            visualDensity: tileDensity,
+            horizontalTitleGap: 8,
+            onLongPress: _onLongPress,
+          );
+        } else if (snapshot.hasData) {
           return ListTile(
             leading: Icon(
               Icons.square,
@@ -54,17 +61,10 @@ class _EventsListItemState extends State<EventsListItem> {
             onTap: () => _onTap(snapshot.data!),
             onLongPress: _onLongPress,
           );
-        } else if (snapshot.hasError) {
+        } else {
           return ListTile(
             leading: Icon(Icons.error_outline, color: Colors.red.shade400),
             title: Text('$code failed to load.'),
-            visualDensity: tileDensity,
-            horizontalTitleGap: 8,
-            onLongPress: _onLongPress,
-          );
-        } else {
-          return ListTile(
-            leading: const CircularProgressIndicator(),
             visualDensity: tileDensity,
             horizontalTitleGap: 8,
             onLongPress: _onLongPress,

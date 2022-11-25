@@ -1,7 +1,7 @@
 import 'dart:async';
 
 abstract class EventsRepository {
-  Future<EventConnection> getEventByCode(String code);
+  Future<EventConnection?> getEventByCode(String code);
 }
 
 abstract class EventConnection {

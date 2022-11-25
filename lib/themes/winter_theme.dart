@@ -21,19 +21,21 @@ class WinterTheme implements AppTheme {
         ),
       );
 
-  static final _base = ThemeData(
+  static final _base = ThemeData.light().copyWith(
+    useMaterial3: true,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         //backgroundColor: Color.fromARGB(255, 181, 51, 70),
-        textStyle: const TextStyle(fontSize: 32),
-        minimumSize: const Size(200, 65),
+        textStyle: const TextStyle(fontSize: 24),
+        minimumSize: const Size(0, 65),
       ),
     ),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        foregroundColor: Colors.black87,
-        textStyle: const TextStyle(fontSize: 32),
-        minimumSize: const Size(200, 65),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        iconSize: 32, foregroundColor: Colors.white),
+    iconButtonTheme: const IconButtonThemeData(
+      style: ButtonStyle(
+        minimumSize: MaterialStatePropertyAll<Size>(Size(64, 64)),
+        iconSize: MaterialStatePropertyAll<double>(24),
       ),
     ),
   );

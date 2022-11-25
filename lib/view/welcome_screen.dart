@@ -41,7 +41,6 @@ class WelcomeScreen extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.arrow_forward),
                   color: Colors.white,
-                  iconSize: 32,
                   onPressed: () {
                     Navigator.of(context).push(EventsListScreen.route());
                   },

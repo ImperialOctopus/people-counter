@@ -13,7 +13,7 @@ class AddCodeDialog extends StatefulWidget {
 
 class _AddCodeDialogState extends State<AddCodeDialog> {
   AddCodeDialogPage page = AddCodeDialogPage.enter;
-  Future<EventConnection>? eventConnection;
+  Future<EventConnection?>? eventConnection;
 
   final TextEditingController _textFieldController = TextEditingController();
 
@@ -39,9 +39,9 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
       contentPadding: const EdgeInsets.only(
         top: 10.0,
       ),
-      title: const Text(
-        "Add event",
-        style: TextStyle(fontSize: 16.0),
+      title: Text(
+        "Add Event",
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
       content: SizedBox(
         //height: 400,
@@ -67,10 +67,10 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () => setState(() {
+                      page = AddCodeDialogPage.test;
                       eventConnection = context
                           .read<EventsRepository>()
                           .getEventByCode(_textFieldController.text);
-                      page = AddCodeDialogPage.test;
                     }),
                     child: const Text("Submit"),
                   ),
@@ -90,15 +90,15 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
   }
 
   Widget _testPage(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<EventConnection?>(
         future: eventConnection,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return _successPage(context, snapshot.data!);
-          } else if (snapshot.hasError) {
-            return _failPage(context);
-          } else {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return _waitingPage(context);
+          } else if (snapshot.hasData) {
+            return _successPage(context, snapshot.data!);
+          } else {
+            return _failPage(context);
           }
         });
   }
@@ -113,9 +113,9 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
       contentPadding: const EdgeInsets.only(
         top: 10.0,
       ),
-      title: const Text(
-        "Checking event database...",
-        style: TextStyle(fontSize: 16.0),
+      title: Text(
+        "Finding event...",
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
       content: SizedBox(
         //height: 400,
@@ -126,8 +126,11 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const Center(
-                  child: CircularProgressIndicator(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
                 Container(
                   width: double.infinity,
@@ -155,7 +158,7 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
       ),
       title: Text(
         'Event found: ${eventConnection.name}',
-        style: const TextStyle(fontSize: 16.0),
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
       content: SizedBox(
         //height: 400,
@@ -166,9 +169,12 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Center(
-                  child:
-                      Icon(Icons.check, size: 64, color: Colors.green.shade300),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                    child: Icon(Icons.check,
+                        size: 64, color: Colors.green.shade300),
+                  ),
                 ),
                 Container(
                   width: double.infinity,
@@ -197,7 +203,7 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
       ),
       title: Text(
         "Couldn't find event: '${_textFieldController.value.text}'",
-        style: const TextStyle(fontSize: 16.0),
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
       content: SizedBox(
         //height: 400,
@@ -208,9 +214,12 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Center(
-                  child:
-                      Icon(Icons.check, size: 64, color: Colors.red.shade300),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                    child:
+                        Icon(Icons.close, size: 64, color: Colors.red.shade300),
+                  ),
                 ),
                 Container(
                   width: double.infinity,
