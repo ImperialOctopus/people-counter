@@ -30,6 +30,8 @@ dependencies:
   file_saver: ^0.1.0
   csv: ^5.0.1
   provider: ^6.0.4
+  shared_preferences: ^2.0.15
+  crypto: ^3.0.2
 
 dev_dependencies:
   lints: ^2.0.0
@@ -50,7 +52,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - carnival_logo.webp
+    - assets/christmas_logo.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

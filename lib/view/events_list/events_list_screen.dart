@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:people_counter/view/events_list/add_code_dialog.dart';
+import 'package:people_counter/view/events_list/remove_code_dialog.dart';
 import '../../repositories/saved_codes/saved_codes_repository.dart';
 import '../../blocs/code_list/code_list_bloc.dart';
 import '../../blocs/code_list/code_list_event.dart';
@@ -59,7 +60,7 @@ class EventsListView extends StatelessWidget {
 }
 
 class EventsListLoadedView extends StatelessWidget {
-  final List<String> codes;
+  final Iterable<String> codes;
 
   const EventsListLoadedView({super.key, required this.codes});
 
@@ -73,12 +74,22 @@ class EventsListLoadedView extends StatelessWidget {
             onPressed: () => _addCodeDialog(context),
           ),
         ],
+        title: const Text('Events'),
       ),
-      body: ListView.separated(
-        itemCount: codes.length,
-        separatorBuilder: (context, _) => const Divider(),
-        itemBuilder: (context, index) => EventsListItem(code: codes[index]),
-      ),
+      body: codes.isEmpty
+          ? const Center(
+              child: Text(
+                "You're not subscribed to any events.\nClick the + in the top right to add one by its event code.",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey),
+              ),
+            )
+          : ListView.separated(
+              itemCount: codes.length,
+              separatorBuilder: (context, _) => const Divider(height: 0),
+              itemBuilder: (context, index) =>
+                  EventsListItem(code: codes.elementAt(index)),
+            ),
     );
   }
 

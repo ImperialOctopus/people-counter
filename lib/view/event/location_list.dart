@@ -4,8 +4,13 @@ import 'package:people_counter/view/event/location_list_item.dart';
 
 class LocationList extends StatelessWidget {
   final List<Future<LocationConnection>> locationConnections;
+  final String roomName;
 
-  const LocationList({super.key, required this.locationConnections});
+  const LocationList({
+    super.key,
+    required this.locationConnections,
+    required this.roomName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +19,10 @@ class LocationList extends StatelessWidget {
       body: ListView.separated(
         itemCount: locationConnections.length,
         separatorBuilder: (context, _) => const Divider(),
-        itemBuilder: (context, index) =>
-            LocationListItem(locationConnection: locationConnections[index]),
+        itemBuilder: (context, index) => LocationListItem(
+          locationConnection: locationConnections[index],
+          roomName: roomName,
+        ),
       ),
     );
   }

@@ -1,7 +1,7 @@
 abstract class SavedCodesRepository {
-  Future<List<String>> get getSavedCodes;
+  Future<Iterable<String>> get getSavedCodes;
 
-  Future<void> saveCode(String code);
+  Future<Iterable<String>> saveCode(String code);
 
-  Future<void> removeCode(String code);
+  Future<Iterable<String>> removeCode(String code);
 }

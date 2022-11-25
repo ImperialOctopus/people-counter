@@ -28,16 +28,9 @@ class CodeListBloc extends Bloc<CodeListEvent, CodeListState> {
   }
 
   void _onAddCode(AddCodeEvent event, Emitter<CodeListState> emitter) async {
-    final currentState = state;
-
     try {
-      await savedCodesRepository.saveCode(event.code);
-
-      if (currentState is CodeListLoaded) {
-        emitter(CodeListLoaded([...currentState.codes, event.code]));
-      } else {
-        add(const LoadSavedCodesEvent());
-      }
+      final list = await savedCodesRepository.saveCode(event.code);
+      emitter(CodeListLoaded(list));
     } catch (e) {
       emitter(CodeListError(e.toString()));
     }
@@ -45,17 +38,9 @@ class CodeListBloc extends Bloc<CodeListEvent, CodeListState> {
 
   void _onRemoveCode(
       RemoveCodeEvent event, Emitter<CodeListState> emitter) async {
-    final currentState = state;
-
     try {
-      await savedCodesRepository.removeCode(event.code);
-
-      if (currentState is CodeListLoaded) {
-        emitter(
-            CodeListLoaded(currentState.codes.toList()..remove(event.code)));
-      } else {
-        add(const LoadSavedCodesEvent());
-      }
+      final list = await savedCodesRepository.removeCode(event.code);
+      emitter(CodeListLoaded(list));
     } catch (e) {
       emitter(CodeListError(e.toString()));
     }

@@ -27,7 +27,7 @@ class LogEntry extends Equatable implements Comparable {
 
   static LogEntry fromFirebaseData(Map<String, dynamic> data) {
     return LogEntry(
-      type: LogEntryType.fromIndex(data['type'] ?? 0),
+      type: LogEntryType.values[(data['type'] ?? 0)],
       time: DateTime.fromMillisecondsSinceEpoch(data['time'] ?? 0),
       location: data['location'] ?? 0,
     );

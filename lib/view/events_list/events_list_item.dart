@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:people_counter/blocs/code_list/code_list_event.dart';
@@ -6,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../../blocs/code_list/code_list_bloc.dart';
 import '../../repositories/events/events_repository.dart';
 import '../event/event_screen.dart';
+import 'remove_code_dialog.dart';
 
 class EventsListItem extends StatefulWidget {
   final String code;
@@ -36,7 +40,14 @@ class _EventsListItemState extends State<EventsListItem> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListTile(
+            leading: Icon(
+              Icons.square,
+              color: _seededColour(snapshot.data!.code),
+            ),
             title: Text(snapshot.data!.name),
+            trailing: Text(snapshot.data!.code,
+                style: const TextStyle(color: Colors.grey)),
+            visualDensity: VisualDensity.comfortable,
             onTap: () => _onTap(snapshot.data!),
             onLongPress: _onLongPress,
           );
@@ -44,11 +55,13 @@ class _EventsListItemState extends State<EventsListItem> {
           return ListTile(
             leading: Icon(Icons.error_outline, color: Colors.red.shade400),
             title: Text('$code failed to load.'),
+            visualDensity: VisualDensity.comfortable,
             onLongPress: _onLongPress,
           );
         } else {
           return ListTile(
             leading: const CircularProgressIndicator(),
+            visualDensity: VisualDensity.comfortable,
             onLongPress: _onLongPress,
           );
         }
@@ -62,6 +75,24 @@ class _EventsListItemState extends State<EventsListItem> {
   }
 
   void _onLongPress() {
-    context.read<CodeListBloc>().add(RemoveCodeEvent(code));
+    showDialog<bool?>(
+        context: context,
+        builder: (context) => RemoveCodeDialog(code: code)).then((value) {
+      if (value == null) {
+        return;
+      }
+      context.read<CodeListBloc>().add(RemoveCodeEvent(code));
+    });
+  }
+
+  Color _seededColour(String seed) {
+    final bytes = utf8.encode(seed);
+    final result = sha1.convert(bytes).bytes;
+    return Color.fromARGB(
+      255,
+      result[0],
+      result[1],
+      result[2],
+    );
   }
 }

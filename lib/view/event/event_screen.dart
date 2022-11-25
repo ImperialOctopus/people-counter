@@ -67,7 +67,9 @@ class _EventScreenState extends State<EventScreen> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return LocationList(
-                              locationConnections: snapshot.data!);
+                            locationConnections: snapshot.data!,
+                            roomName: widget.eventConnection.name,
+                          );
                         } else if (snapshot.hasError) {
                           return ErrorPage(
                               message:

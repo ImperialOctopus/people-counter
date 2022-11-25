@@ -5,8 +5,13 @@ import '../counter/counter_screen.dart';
 
 class LocationListItem extends StatefulWidget {
   final Future<LocationConnection> locationConnection;
+  final String roomName;
 
-  const LocationListItem({super.key, required this.locationConnection});
+  const LocationListItem({
+    super.key,
+    required this.locationConnection,
+    required this.roomName,
+  });
 
   @override
   State<LocationListItem> createState() => _LocationListItemState();
@@ -21,8 +26,10 @@ class _LocationListItemState extends State<LocationListItem> {
         if (snapshot.hasData) {
           return ListTile(
             title: Text(snapshot.data!.name),
-            onTap: () =>
-                Navigator.of(context).push(CounterScreen.route(snapshot.data!)),
+            onTap: () => Navigator.of(context).push(CounterScreen.route(
+              snapshot.data!,
+              widget.roomName,
+            )),
           );
         } else if (snapshot.hasError) {
           return ListTile(

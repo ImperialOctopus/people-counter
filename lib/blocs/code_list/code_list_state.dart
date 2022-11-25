@@ -21,7 +21,7 @@ class CodeListLoading extends CodeListState {
 }
 
 class CodeListLoaded extends CodeListState {
-  final List<String> codes;
+  final Iterable<String> codes;
 
   const CodeListLoaded(this.codes);
 
