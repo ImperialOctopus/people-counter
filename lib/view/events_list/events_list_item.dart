@@ -21,6 +21,8 @@ class EventsListItem extends StatefulWidget {
 }
 
 class _EventsListItemState extends State<EventsListItem> {
+  static const tileDensity = VisualDensity(vertical: 3);
+
   late final Future<EventConnection> eventConnection;
   late final Future<String> name;
   late final String code;
@@ -47,7 +49,8 @@ class _EventsListItemState extends State<EventsListItem> {
             title: Text(snapshot.data!.name),
             trailing: Text(snapshot.data!.code,
                 style: const TextStyle(color: Colors.grey)),
-            visualDensity: VisualDensity.comfortable,
+            visualDensity: tileDensity,
+            horizontalTitleGap: 8,
             onTap: () => _onTap(snapshot.data!),
             onLongPress: _onLongPress,
           );
@@ -55,13 +58,15 @@ class _EventsListItemState extends State<EventsListItem> {
           return ListTile(
             leading: Icon(Icons.error_outline, color: Colors.red.shade400),
             title: Text('$code failed to load.'),
-            visualDensity: VisualDensity.comfortable,
+            visualDensity: tileDensity,
+            horizontalTitleGap: 8,
             onLongPress: _onLongPress,
           );
         } else {
           return ListTile(
             leading: const CircularProgressIndicator(),
-            visualDensity: VisualDensity.comfortable,
+            visualDensity: tileDensity,
+            horizontalTitleGap: 8,
             onLongPress: _onLongPress,
           );
         }

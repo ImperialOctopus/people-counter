@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:people_counter/view/events_list/add_code_dialog.dart';
-import 'package:people_counter/view/events_list/remove_code_dialog.dart';
+import '../../transitions/slide_up_transition.dart';
+import 'add_code_dialog.dart';
 import '../../repositories/saved_codes/saved_codes_repository.dart';
 import '../../blocs/code_list/code_list_bloc.dart';
 import '../../blocs/code_list/code_list_event.dart';
@@ -16,7 +16,11 @@ class EventsListScreen extends StatelessWidget {
   const EventsListScreen({super.key});
 
   static Route<void> route() {
-    return MaterialPageRoute(builder: (context) => const EventsListScreen());
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const EventsListScreen(),
+      transitionsBuilder: slideUpTransition,
+    );
   }
 
   @override

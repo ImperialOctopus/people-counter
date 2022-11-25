@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:people_counter/repositories/events/events_repository.dart';
 
 import '../../blocs/counter/counter_cubit.dart';
+import '../../transitions/slide_up_transition.dart';
 
 /// Main app screen with counter.
 class CounterScreen extends StatelessWidget {
@@ -17,13 +18,15 @@ class CounterScreen extends StatelessWidget {
   });
 
   static Route<void> route(
-          LocationConnection locationConnection, String eventName) =>
-      MaterialPageRoute(
-        builder: (context) => CounterScreen(
-          locationConnection: locationConnection,
-          eventName: eventName,
-        ),
-      );
+      LocationConnection locationConnection, String eventName) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => CounterScreen(
+        locationConnection: locationConnection,
+        eventName: eventName,
+      ),
+      transitionsBuilder: slideUpTransition,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +70,12 @@ class CounterScreen extends StatelessWidget {
             Text(
               eventName,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline2,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
             Text(
               locationConnection.name,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
             const SizedBox(height: 24),
             IconButton(

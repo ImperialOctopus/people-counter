@@ -30,12 +30,12 @@ class WelcomeScreen extends StatelessWidget {
               ),
               Text(
                 Config.appTitle,
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 20),
               Ink(
                 decoration: ShapeDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                   shape: const CircleBorder(),
                 ),
                 child: IconButton(

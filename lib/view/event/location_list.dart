@@ -14,15 +14,12 @@ class LocationList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: ListView.separated(
-        itemCount: locationConnections.length,
-        separatorBuilder: (context, _) => const Divider(),
-        itemBuilder: (context, index) => LocationListItem(
-          locationConnection: locationConnections[index],
-          roomName: roomName,
-        ),
+    return ListView.separated(
+      itemCount: locationConnections.length,
+      separatorBuilder: (context, _) => const Divider(),
+      itemBuilder: (context, index) => LocationListItem(
+        locationConnection: locationConnections[index],
+        roomName: roomName,
       ),
     );
   }

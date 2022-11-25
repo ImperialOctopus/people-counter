@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:people_counter/config.dart';
+import 'package:people_counter/repositories/saved_codes/shared_preferences_saved_codes_repository.dart';
 
 import 'repositories/events/events_repository.dart';
 import 'repositories/events/firebase_event_repository.dart';
-import 'repositories/saved_codes/memory_saved_codes_repository.dart';
 import 'repositories/saved_codes/saved_codes_repository.dart';
-import 'themes/people_counter_theme.dart';
 import 'view/shared/error_page.dart';
 import 'view/shared/loading_page.dart';
 import 'view/welcome_screen.dart';
 
 /// Full app widget.
 class PeopleCounterApp extends StatefulWidget {
-  static const title = 'People Counter';
-
   const PeopleCounterApp({super.key});
 
   @override
@@ -29,7 +27,7 @@ class _PeopleCounterAppState extends State<PeopleCounterApp> {
     super.initState();
 
     eventsRepository = FirebaseEventsRepository.initialise();
-    savedCodesRepository = MemorySavedCodesRepository();
+    savedCodesRepository = SharedPreferencesSavedCodesRepository();
   }
 
   @override
@@ -72,9 +70,9 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: PeopleCounterApp.title,
-      theme: PeopleCounterTheme.light,
-      darkTheme: PeopleCounterTheme.dark,
+      title: Config.appTitle,
+      theme: Config.theme.light,
+      //darkTheme: Config.theme.dark,
       home: const WelcomeScreen(),
     );
   }
