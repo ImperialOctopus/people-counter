@@ -4,6 +4,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:people_counter/blocs/code_list/code_list_event.dart';
+import 'package:people_counter/view/components/list_card.dart';
 import 'package:provider/provider.dart';
 
 import '../../blocs/code_list/code_list_bloc.dart';
@@ -21,8 +22,6 @@ class EventsListItem extends StatefulWidget {
 }
 
 class _EventsListItemState extends State<EventsListItem> {
-  static const tileDensity = VisualDensity(vertical: 3);
-
   late final Future<EventConnection?> eventConnection;
   late final Future<String> name;
   late final String code;
@@ -41,33 +40,38 @@ class _EventsListItemState extends State<EventsListItem> {
       future: eventConnection,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return ListTile(
-            leading: const CircularProgressIndicator(),
+          return ListCard(
+            leading: const SizedBox(
+              height: 40,
+              width: 40,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
             title: Text('Loading $code'),
-            visualDensity: tileDensity,
-            horizontalTitleGap: 8,
             onLongPress: _onLongPress,
           );
         } else if (snapshot.hasData) {
-          return ListTile(
+          return ListCard(
             leading: Icon(
               Icons.square,
+              size: 40,
               color: _seededColour(snapshot.data!.code),
             ),
             title: Text(snapshot.data!.name),
             trailing: Text(snapshot.data!.code,
                 style: const TextStyle(color: Colors.grey)),
-            visualDensity: tileDensity,
-            horizontalTitleGap: 8,
             onTap: () => _onTap(snapshot.data!),
             onLongPress: _onLongPress,
           );
         } else {
-          return ListTile(
-            leading: Icon(Icons.error_outline, color: Colors.red.shade400),
+          return ListCard(
+            leading: Icon(
+              Icons.error_outline,
+              color: Colors.red.shade400,
+              size: 40,
+            ),
             title: Text('$code failed to load.'),
-            visualDensity: tileDensity,
-            horizontalTitleGap: 8,
             onLongPress: _onLongPress,
           );
         }

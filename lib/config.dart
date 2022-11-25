@@ -7,4 +7,6 @@ class Config {
   static const String appTitle = 'People Counter';
 
   static const AppTheme theme = WinterTheme();
+
+  static const Set<String> presetEventsList = {'t_christmas_2022'};
 }

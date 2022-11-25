@@ -87,9 +87,8 @@ class EventsListLoadedView extends StatelessWidget {
                 style: TextStyle(color: Colors.grey),
               ),
             )
-          : ListView.separated(
+          : ListView.builder(
               itemCount: codes.length,
-              separatorBuilder: (context, _) => const Divider(height: 0),
               itemBuilder: (context, index) =>
                   EventsListItem(code: codes.elementAt(index)),
             ),

@@ -36,7 +36,9 @@ class _EventScreenState extends State<EventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(widget.eventConnection.name),
+      ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -47,11 +49,7 @@ class _EventScreenState extends State<EventScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  widget.eventConnection.name,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-                Text(
-                  'Location',
+                  'Locations',
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 const SizedBox(height: 24),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:people_counter/repositories/events/events_repository.dart';
 
+import '../components/list_card.dart';
 import '../counter/counter_screen.dart';
 
 class LocationListItem extends StatefulWidget {
@@ -24,7 +25,7 @@ class _LocationListItemState extends State<LocationListItem> {
       future: widget.locationConnection,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ListTile(
+          return ListCard(
             title: Text(snapshot.data!.name),
             onTap: () => Navigator.of(context).push(CounterScreen.route(
               snapshot.data!,
@@ -32,11 +33,11 @@ class _LocationListItemState extends State<LocationListItem> {
             )),
           );
         } else if (snapshot.hasError) {
-          return ListTile(
+          return ListCard(
             leading: Icon(Icons.error_outline, color: Colors.red.shade400),
           );
         } else {
-          return const ListTile(leading: CircularProgressIndicator());
+          return const ListCard(leading: CircularProgressIndicator());
         }
       },
     );
