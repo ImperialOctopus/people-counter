@@ -96,10 +96,17 @@ class FirebaseLocationConnection implements LocationConnection {
   final Stream<int> valuesStream;
 
   @override
+  int current = 0;
+
+  @override
   String get name => _name;
 
-  const FirebaseLocationConnection._(
-      this._collectionReference, this._name, this._index, this.valuesStream);
+  FirebaseLocationConnection._(
+      this._collectionReference, this._name, this._index, this.valuesStream) {
+    valuesStream.listen((event) {
+      current = event;
+    });
+  }
 
   static Future<LocationConnection> initialise(
     CollectionReference<Map<String, dynamic>> collectionReference,

@@ -16,5 +16,6 @@ abstract class LocationConnection {
   Future<void> sendReset();
 
   String get name;
+  int get current;
   Stream<int> get valuesStream;
 }

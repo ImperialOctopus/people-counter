@@ -18,7 +18,7 @@ class CounterCubit extends Cubit<int> {
   /// Cubit to hold main count.
   CounterCubit({required LocationConnection locationConnection})
       : _locationConnection = locationConnection,
-        super(0) {
+        super(locationConnection.current) {
     _streamSubscription =
         locationConnection.valuesStream.listen(_onValueReceived);
   }
