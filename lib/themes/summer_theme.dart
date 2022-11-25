@@ -5,7 +5,7 @@ class SummerTheme implements AppTheme {
   const SummerTheme();
 
   @override
-  ThemeData get light => _base.copyWith(
+  ThemeData get light => ThemeData(
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.blue,
           brightness: Brightness.light,

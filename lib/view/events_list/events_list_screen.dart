@@ -72,18 +72,17 @@ class EventsListLoadedView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => _addCodeDialog(context),
-          ),
-        ],
         title: const Text('Events'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        onPressed: () => _addCodeDialog(context),
+        child: const Icon(Icons.add),
       ),
       body: codes.isEmpty
           ? const Center(
               child: Text(
-                "You're not subscribed to any events.\nClick the + in the top right to add one by its event code.",
+                "You're not subscribed to any events.\nPress the + button add one by its event code.",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey),
               ),
