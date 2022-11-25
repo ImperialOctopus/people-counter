@@ -15,32 +15,35 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              /*Text(
-                  title,
-                  style: Theme.of(context).textTheme.headline1,
-                ),*/
-              const SizedBox(
-                height: 240,
-                child: Center(
-                  child: Image(
-                    fit: BoxFit.contain,
-                    image: AssetImage(Config.headerImage),
-                  ),
-                ),
+              //const SizedBox(
+              //  height: 240,
+              //  child: Center(
+              //    child: Image(
+              //      fit: BoxFit.contain,
+              //      image: AssetImage(Config.headerImage),
+              //    ),
+              //  ),
+              //),
+              Text(
+                Config.appTitleLeadIn,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               Text(
                 Config.appTitle,
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: Theme.of(context).textTheme.displayMedium,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 64),
               Ink(
                 decoration: ShapeDecoration(
                   color: Theme.of(context).colorScheme.primary,
                   shape: const CircleBorder(),
                 ),
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_forward),
-                  color: Colors.white,
+                  icon: const Icon(
+                    Icons.play_arrow_rounded,
+                    size: 32,
+                  ),
+                  color: Colors.grey.shade100,
                   onPressed: () {
                     Navigator.of(context).push(EventsListScreen.route());
                   },

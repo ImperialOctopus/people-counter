@@ -15,6 +15,8 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
   AddCodeDialogPage page = AddCodeDialogPage.enter;
   Future<EventConnection?>? eventConnection;
 
+  bool submitEnabled = false;
+
   final TextEditingController _textFieldController = TextEditingController();
 
   @override
@@ -54,24 +56,37 @@ class _AddCodeDialogState extends State<AddCodeDialog> {
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _textFieldController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter event code here.',
-                        labelText: 'Event code'),
-                  ),
+                  child: TextFormField(
+                      controller: _textFieldController,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter event code here.',
+                          labelText: 'Event code'),
+                      //autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onChanged: (String? text) {
+                        if (text?.isNotEmpty ?? false) {
+                          setState(() {
+                            submitEnabled = true;
+                          });
+                        } else {
+                          setState(() {
+                            submitEnabled = false;
+                          });
+                        }
+                      }),
                 ),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                    onPressed: () => setState(() {
-                      page = AddCodeDialogPage.test;
-                      eventConnection = context
-                          .read<EventsRepository>()
-                          .getEventByCode(_textFieldController.text);
-                    }),
+                    onPressed: submitEnabled
+                        ? () => setState(() {
+                              page = AddCodeDialogPage.test;
+                              eventConnection = context
+                                  .read<EventsRepository>()
+                                  .getEventByCode(_textFieldController.text);
+                            })
+                        : null,
                     child: const Text("Submit"),
                   ),
                 ),

@@ -36,19 +36,27 @@ class FirebaseEventConnection implements EventConnection {
   );
 
   static Future<FirebaseEventConnection?> initialise(String code) async {
-    // Sets the reference to collection at root/{room name}
-    final collectionReference = FirebaseFirestore.instance.collection(code);
+    try {
+      if (code.isEmpty) {
+        return null;
+      }
 
-    final name = await collectionReference
-        .doc('meta')
-        .get()
-        .then((value) => value.data()?['name'] as String?);
+      // Sets the reference to collection at root/{room name}
+      final collectionReference = FirebaseFirestore.instance.collection(code);
 
-    if (name == null) {
+      final name = await collectionReference
+          .doc('meta')
+          .get()
+          .then((value) => value.data()?['name'] as String?);
+
+      if (name == null) {
+        return null;
+      }
+
+      return FirebaseEventConnection._(code, collectionReference, name);
+    } catch (e) {
       return null;
     }
-
-    return FirebaseEventConnection._(code, collectionReference, name);
   }
 
   @override
