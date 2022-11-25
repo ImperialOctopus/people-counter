@@ -25,21 +25,22 @@ class _LocationListItemState extends State<LocationListItem> {
       future: widget.locationConnection,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          final locationConnection = snapshot.data!;
           return ListCard(
-            title: Text(snapshot.data!.name),
+            title: Text(locationConnection.name),
             onTap: () => Navigator.of(context).push(CounterScreen.route(
-              snapshot.data!,
+              locationConnection,
               widget.roomName,
             )),
             trailing: StreamBuilder(
-              stream: snapshot.data!.valuesStream,
-              initialData: null,
-              builder: (context, snapshot) {
-                if (snapshot.data == null) {
+              stream: locationConnection.valuesStream,
+              initialData: locationConnection.current,
+              builder: (context, valueSnapshot) {
+                if (valueSnapshot.data == null) {
                   return const CircularProgressIndicator();
                 } else {
                   return Text(
-                    snapshot.data.toString(),
+                    valueSnapshot.data.toString(),
                     style: Theme.of(context).textTheme.bodyLarge,
                   );
                 }
