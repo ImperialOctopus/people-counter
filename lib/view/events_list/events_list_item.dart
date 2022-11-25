@@ -97,7 +97,7 @@ class _EventsListItemState extends State<EventsListItem> {
 
   Color _seededColour(String seed) {
     final bytes = utf8.encode(seed);
-    final result = sha1.convert(bytes).bytes;
+    final result = sha512.convert(bytes).bytes;
     return Color.fromARGB(
       255,
       result[0],
