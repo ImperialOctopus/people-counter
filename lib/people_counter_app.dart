@@ -4,7 +4,7 @@ import 'package:people_counter/config.dart';
 import 'package:people_counter/repositories/saved_codes/shared_preferences_saved_codes_repository.dart';
 
 import 'repositories/events/events_repository.dart';
-import 'repositories/events/firebase_event_repository.dart';
+import 'repositories/events/firebase_events_repository.dart';
 import 'repositories/saved_codes/saved_codes_repository.dart';
 import 'view/shared/error_page.dart';
 import 'view/shared/loading_page.dart';
