@@ -88,7 +88,8 @@ class FirebaseEventConnection implements EventConnection {
 class FirebaseLocationConnection implements LocationConnection {
   final CollectionReference<Map<String, dynamic>> _collectionReference;
 
-  final String _name;
+  @override
+  final String name;
 
   final int _index;
 
@@ -98,11 +99,8 @@ class FirebaseLocationConnection implements LocationConnection {
   @override
   int current = 0;
 
-  @override
-  String get name => _name;
-
   FirebaseLocationConnection._(
-      this._collectionReference, this._name, this._index, this.valuesStream) {
+      this._collectionReference, this.name, this._index, this.valuesStream) {
     valuesStream.listen((event) {
       current = event;
     });
