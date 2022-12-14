@@ -15,5 +15,5 @@ class Config {
   static const counterDebounceDelay = Duration(milliseconds: 1000);
 
   // Presets
-  static const presetEventsList = {};
+  static const presetEventsList = <String>{};
 }
