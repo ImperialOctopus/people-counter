@@ -8,12 +8,12 @@ class Config {
   static const appTitle = 'People Counter';
 
   // Connection (Rails)
-  static const apiAddress = 'http://localhost:3000';
+  static const apiAddress = 'https://counter.imperialoctopus.com:443';
   static const httpReloadDelay = Duration(seconds: 3);
 
   // Counter
   static const counterDebounceDelay = Duration(milliseconds: 1000);
 
   // Presets
-  static const presetEventsList = {'t_christmas_2022'};
+  static const presetEventsList = {};
 }
