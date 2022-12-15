@@ -24,7 +24,6 @@ class RailsEventsRepository implements EventsRepository {
     final json = jsonDecode(response.body);
 
     final name = json['name'];
-    final eventId = json['id'];
 
     return RailsEventConnection._(
       apiAddress: apiAddress,
