@@ -28,7 +28,6 @@ class RailsEventsRepository implements EventsRepository {
 
     return RailsEventConnection._(
       apiAddress: apiAddress,
-      eventId: eventId,
       code: code,
       name: name,
     );
@@ -37,7 +36,6 @@ class RailsEventsRepository implements EventsRepository {
 
 class RailsEventConnection implements EventConnection {
   final String apiAddress;
-  final int eventId;
 
   @override
   final String code;
@@ -48,7 +46,6 @@ class RailsEventConnection implements EventConnection {
 
   RailsEventConnection._({
     required this.apiAddress,
-    required this.eventId,
     required this.code,
     required this.name,
   });
@@ -56,7 +53,7 @@ class RailsEventConnection implements EventConnection {
   @override
   Future<List<Future<LocationConnection>>> get locations {
     return _locations ??= Future.microtask(() async {
-      final uri = Uri.parse('$apiAddress/api/v1/events/$eventId/locations');
+      final uri = Uri.parse('$apiAddress/api/v1/events/$code/locations');
       final response = await http.get(uri);
 
       if (response.statusCode != HttpStatus.ok || response.body.isEmpty) {
